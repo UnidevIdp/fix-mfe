@@ -376,19 +376,39 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
             </div>
 
                 className="gap-2 hover:bg-accent/50 transition-all duration-200 border-border/50 hover:border-border"
-              <Button variant="outline" onClick={onRefresh || (() => {})} className="gap-2 hover:bg-accent transition-colors">
+              <Button 
                 variant="outline"
-                variant="secondary"
-              </Button>
-                className="gap-2 hover:bg-secondary/80 transition-all duration-200"
-              <Button variant="secondary" onClick={() => setViewMode('bulk')} className="gap-2 hover:bg-secondary/80 transition-colors">
-                <Settings2 size={16} />
-                Bulk Manage
+                onClick={onRefresh || (() => {})} 
+                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:text-slate-700 hover:border-slate-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-white/80 backdrop-blur-sm"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <div className="relative flex items-center gap-2">
+                  <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-300" />
+                  Refresh
+                </div>
               </Button>
               
-              <Button onClick={handleCreateNew} className="gap-2 px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
-                <Plus size={16} />
-                className="gap-2 px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+              <Button 
+                variant="outline"
+                onClick={() => setViewMode('bulk')} 
+                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:text-indigo-700 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-indigo-50/50 backdrop-blur-sm"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <div className="relative flex items-center gap-2">
+                  <Settings2 size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                  Bulk Manage
+                </div>
+              </Button>
+              
+              <Button 
+                onClick={handleCreateNew} 
+                className="group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <div className="relative flex items-center gap-2">
+                  <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                  Add Coupon
+                </div>
               </Button>
             </div>
           </div>
