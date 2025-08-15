@@ -3,7 +3,6 @@ import { useProducts, useCategories, useDeleteProduct, useUpdateProductStatus } 
 import { Product, ProductFilters } from '../services/productsApi';
 import { mockProducts, mockCategories } from '../services/mockData';
 import { ProductsManagementDashboard } from './ProductsManagementDashboard';
-import { ProductsFilters } from './ProductsFilters';
 
 export const ProductsManagement: React.FC = () => {
   const [filters, setFilters] = useState<ProductFilters>({
@@ -92,34 +91,22 @@ export const ProductsManagement: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Search and Filters */}
-      <ProductsFilters
-        onSearch={handleSearch}
-        onFilterChange={handleFilterChange}
-        loading={isLoadingProducts}
-        searchResultsCount={products.length}
-        totalProductsCount={products.length}
-        currentSearchQuery={searchQuery}
-      />
-
-      {/* Products Management Dashboard */}
-      <ProductsManagementDashboard
-        products={products}
-        selectedProduct={selectedProduct}
-        loading={isLoadingProducts}
-        error={productsError?.message || null}
-        searchQuery={searchQuery}
-        filters={filters}
-        onProductSelect={handleProductSelect}
-        onProductCreate={handleProductCreate}
-        onProductUpdate={handleProductUpdate}
-        onProductDelete={handleProductDelete}
-        onSearch={handleSearch}
-        onFilterChange={handleFilterChange}
-        onRefresh={handleRefresh}
-      />
-    </div>
+    <ProductsManagementDashboard
+      products={products}
+      selectedProduct={selectedProduct}
+      loading={isLoadingProducts}
+      error={productsError?.message || null}
+      searchQuery={searchQuery}
+      filters={filters}
+      onProductSelect={handleProductSelect}
+      onProductCreate={handleProductCreate}
+      onProductUpdate={handleProductUpdate}
+      onProductDelete={handleProductDelete}
+      onSearch={handleSearch}
+      onFilterChange={handleFilterChange}
+      onRefresh={handleRefresh}
+      className="w-full"
+    />
   );
 };
 

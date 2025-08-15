@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Product } from '../services/productsApi';
+import { ProductDetails } from './details/ProductDetails';
+import { ProductsForm } from './forms/ProductsForm';
 import { 
   Package, 
   CheckCircle, 
@@ -11,243 +13,19 @@ import {
   Eye, 
   Settings2, 
   TrendingUp,
-  ShoppingCart
+  ShoppingCart,
+  DollarSign,
+  Activity,
+  Mail,
+  Building2,
+  Briefcase
 } from 'lucide-react';
 import { useMfeRouter } from '@workspace/shared';
 import { ProductRoutes, getBreadcrumbs } from '../utils/routing';
 import { Button } from '@workspace/ui';
 import { Card, CardContent } from '@workspace/ui';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui';
-import { ProductsForm } from './forms/ProductsForm';
-
-// ProductsFilters Component (embedded for completeness)
-interface ProductsFiltersProps {
-  onSearch: (query: string) => void;
-  onFilterChange: (filters: any) => void;
-  loading?: boolean;
-  searchResultsCount?: number;
-  totalProductCount?: number;
-  currentSearchQuery?: string;
-}
-
-const ProductsFilters: React.FC<ProductsFiltersProps> = ({
-  onSearch,
-  onFilterChange,
-  loading,
-  searchResultsCount = 0,
-  totalProductCount = 0,
-  currentSearchQuery = ''
-}) => {
-  const [searchInput, setSearchInput] = useState(currentSearchQuery);
-  const [filters, setFilters] = useState({
-    status: 'all',
-    inventoryStatus: 'all',
-    category: 'all',
-    priceRange: 'all'
-  });
-
-  const handleSearch = useCallback(() => {
-    onSearch(searchInput);
-  }, [searchInput, onSearch]);
-
-  const handleFilterUpdate = useCallback((key: string, value: string) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
-  }, [filters, onFilterChange]);
-
-  const clearFilters = useCallback(() => {
-    setFilters({
-      status: 'all',
-      inventoryStatus: 'all',
-      category: 'all',
-      priceRange: 'all'
-    });
-    setSearchInput('');
-    onSearch('');
-    onFilterChange({});
-  }, [onSearch, onFilterChange]);
-
-  return (
-    <Card>
-      <CardContent className="p-4">
-        {/* Search Bar */}
-        <div className="flex gap-2 mb-4">
-          <div className="relative flex-1">
-            <Search 
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" 
-              size={18} 
-              style={{ color: 'var(--muted-foreground)' }}
-            />
-            <input
-              type="text"
-              placeholder="Search products by name, SKU, or description..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              style={{
-                width: '100%',
-                padding: '0.5rem 0.75rem 0.5rem 2.5rem',
-                fontSize: '0.875rem',
-                border: '1px solid var(--border)',
-                borderRadius: '0.375rem',
-                backgroundColor: 'white',
-                outline: 'none',
-                transition: 'border-color 0.2s'
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'var(--ring)';
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border)';
-              }}
-            />
-          </div>
-          <button 
-            onClick={handleSearch} 
-            disabled={loading}
-            style={{
-              padding: '0.5rem 1rem',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-              backgroundColor: 'white',
-              color: 'var(--foreground)',
-              border: '1px solid var(--border)',
-              borderRadius: '0.375rem',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.5 : 1,
-              transition: 'all 0.2s'
-            }}
-            onMouseEnter={(e) => {
-              if (!loading) e.currentTarget.style.backgroundColor = '#f9fafb';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-            }}
-          >
-            Search
-          </button>
-        </div>
-
-        {/* Filter Row */}
-        <div className="flex flex-wrap gap-2">
-          <select 
-            value={filters.status} 
-            onChange={(e) => handleFilterUpdate('status', e.target.value)}
-            style={{
-              padding: '0.5rem 0.75rem',
-              fontSize: '0.875rem',
-              border: '1px solid var(--border)',
-              borderRadius: '0.375rem',
-              backgroundColor: 'white',
-              cursor: 'pointer',
-              minWidth: '10rem'
-            }}
-          >
-            <option value="all">All Status</option>
-            <option value="ACTIVE">Active</option>
-            <option value="INACTIVE">Inactive</option>
-            <option value="DRAFT">Draft</option>
-            <option value="PENDING">Pending</option>
-          </select>
-
-          <select 
-            value={filters.inventoryStatus} 
-            onChange={(e) => handleFilterUpdate('inventoryStatus', e.target.value)}
-            style={{
-              padding: '0.5rem 0.75rem',
-              fontSize: '0.875rem',
-              border: '1px solid var(--border)',
-              borderRadius: '0.375rem',
-              backgroundColor: 'white',
-              cursor: 'pointer',
-              minWidth: '10rem'
-            }}
-          >
-            <option value="all">All Inventory</option>
-            <option value="IN_STOCK">In Stock</option>
-            <option value="LOW_STOCK">Low Stock</option>
-            <option value="OUT_OF_STOCK">Out of Stock</option>
-          </select>
-
-          <select 
-            value={filters.category} 
-            onChange={(e) => handleFilterUpdate('category', e.target.value)}
-            style={{
-              padding: '0.5rem 0.75rem',
-              fontSize: '0.875rem',
-              border: '1px solid var(--border)',
-              borderRadius: '0.375rem',
-              backgroundColor: 'white',
-              cursor: 'pointer',
-              minWidth: '10rem'
-            }}
-          >
-            <option value="all">All Categories</option>
-            <option value="electronics">Electronics</option>
-            <option value="clothing">Clothing</option>
-            <option value="food">Food</option>
-            <option value="other">Other</option>
-          </select>
-
-          <select 
-            value={filters.priceRange} 
-            onChange={(e) => handleFilterUpdate('priceRange', e.target.value)}
-            style={{
-              padding: '0.5rem 0.75rem',
-              fontSize: '0.875rem',
-              border: '1px solid var(--border)',
-              borderRadius: '0.375rem',
-              backgroundColor: 'white',
-              cursor: 'pointer',
-              minWidth: '10rem'
-            }}
-          >
-            <option value="all">All Prices</option>
-            <option value="0-50">$0 - $50</option>
-            <option value="50-100">$50 - $100</option>
-            <option value="100-500">$100 - $500</option>
-            <option value="500+">$500+</option>
-          </select>
-
-          <button 
-            onClick={clearFilters}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.5rem 1rem',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-              backgroundColor: 'white',
-              color: 'var(--foreground)',
-              border: '1px solid var(--border)',
-              borderRadius: '0.375rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f9fafb';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-            }}
-          >
-            <XCircle size={16} />
-            Clear Filters
-          </button>
-        </div>
-
-        {/* Results Count */}
-        {currentSearchQuery && (
-          <div className="mt-3 text-sm text-muted-foreground">
-            Found {searchResultsCount} of {totalProductCount} products
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-};
+import { ProductsFilters } from './ProductsFilters';
 
 // Main Component Props
 interface ProductsManagementDashboardProps {
@@ -291,7 +69,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
 }) => {
   const { navigate, location, hasRouter } = useMfeRouter('products-hub');
   const [internalViewMode, setInternalViewMode] = useState<ViewMode>('list');
-  const [_productId, setProductId] = useState<string | null>(null);
+  const [productId, setProductId] = useState<string | null>(null);
   const [selectedForBulk, setSelectedForBulk] = useState<string[]>([]);
   const [bulkAction, setBulkAction] = useState<'none' | 'delete' | 'activate' | 'deactivate'>('none');
   
@@ -422,38 +200,22 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
   // Detail view
   if (viewMode === 'detail' && selectedProduct) {
     return (
-      <div style={{ width: '100%', margin: '0 auto' }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: '2rem'
-        }}>
-          <button
-            onClick={handleBackToList}
-            style={{
-              padding: '0.5rem',
-              backgroundColor: 'transparent',
-              border: '1px solid var(--border)',
-              borderRadius: '0.5rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: '1rem'
-            }}
-          >
-            ← Back to Product List
-          </button>
-          <h2 style={{ margin: 0, fontSize: '1.5rem' }}>
-            Product Details: {selectedProduct.name}
-          </h2>
-        </div>
-        <Card>
-          <CardContent className="p-6">
-            <div>Product details for {selectedProduct.name}</div>
-          </CardContent>
-        </Card>
-      </div>
+      <ProductDetails
+        product={selectedProduct}
+        onBack={handleBackToList}
+        onEdit={async (updatedProduct) => {
+          await onProductUpdate(updatedProduct.id, updatedProduct);
+          onRefresh();
+        }}
+        onEditMode={() => {
+          navigate(ProductRoutes.edit(selectedProduct.id));
+        }}
+        onDelete={async (productId) => {
+          await onProductDelete(productId);
+          handleBackToList();
+          onRefresh();
+        }}
+      />
     );
   }
 
@@ -471,7 +233,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
             style={{
               padding: '0.5rem',
               backgroundColor: 'transparent',
-              border: '1px solid var(--border)',
+              border: '1px solid var(--product-dashboard-border, hsl(var(--border)))',
               borderRadius: '0.5rem',
               cursor: 'pointer',
               display: 'flex',
@@ -657,9 +419,9 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
       {viewMode === 'bulk' && (
         <div style={{
           padding: '1rem',
-          backgroundColor: 'hsl(var(--accent) / 0.1)',
+          backgroundColor: 'var(--product-dashboard-bulk-bg, hsl(var(--accent)) / 0.1)',
           borderRadius: '0.75rem',
-          border: '1px solid hsl(var(--accent))'
+          border: '1px solid var(--product-dashboard-accent, hsl(var(--accent)))'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -698,7 +460,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
               <RefreshCw size={32} color="rgb(239, 68, 68)" />
             </div>
             <h3 style={{ 
-              color: 'var(--foreground)',
+              color: 'var(--product-dashboard-foreground, hsl(var(--foreground)))',
               marginBottom: '0.5rem',
               fontSize: '1.25rem',
               fontWeight: '600'
@@ -706,7 +468,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
               Failed to Load Product Data
             </h3>
             <p style={{ 
-              color: 'var(--muted-foreground)',
+              color: 'var(--product-dashboard-muted, hsl(var(--muted-foreground)))',
               marginBottom: '1.5rem',
               fontSize: '0.875rem'
             }}>
@@ -743,7 +505,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
           <div style={{
             padding: '3rem',
             textAlign: 'center',
-            color: 'var(--muted-foreground)'
+            color: 'var(--product-dashboard-muted, hsl(var(--muted-foreground)))'
           }}>
             <div style={{ 
               display: 'flex', 
@@ -774,21 +536,21 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                     alignItems: 'center',
                     padding: '1rem',
                     backgroundColor: isEven 
-                      ? 'transparent'
-                      : 'hsl(var(--muted) / 0.05)',
+                      ? 'var(--product-dashboard-row-even, transparent)'
+                      : 'var(--product-dashboard-row-odd, hsl(var(--muted)) / 0.05)',
                     borderBottom: index < products.length - 1 
-                      ? '1px solid hsl(var(--border))'
+                      ? '1px solid var(--product-dashboard-border, hsl(var(--border)))'
                       : 'none',
                     cursor: 'pointer',
                     transition: 'background-color 0.2s ease'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'hsl(var(--accent) / 0.1)';
+                    e.currentTarget.style.backgroundColor = 'var(--product-dashboard-hover, hsl(var(--accent)) / 0.1)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = isEven 
-                      ? 'transparent'
-                      : 'hsl(var(--muted) / 0.05)';
+                      ? 'var(--product-dashboard-row-even, transparent)'
+                      : 'var(--product-dashboard-row-odd, hsl(var(--muted)) / 0.05)';
                   }}
                 >
                   {/* Bulk selection checkbox */}
@@ -807,7 +569,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                     width: '3rem',
                     height: '3rem',
                     borderRadius: '50%',
-                    backgroundColor: 'hsl(var(--primary))',
+                    backgroundColor: 'var(--product-dashboard-avatar-bg, hsl(var(--primary)))',
                     color: 'white',
                     display: 'flex',
                     alignItems: 'center',
@@ -851,28 +613,13 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                         borderRadius: '9999px',
                         fontSize: '0.75rem',
                         fontWeight: '500',
-                        border: '1.5px solid',
-                        borderColor: product.status === 'ACTIVE' 
-                          ? '#16a34a'
-                          : product.status === 'DRAFT'
-                          ? '#6b7280'
-                          : product.status === 'PENDING'
-                          ? '#eab308'
-                          : '#dc2626',
                         backgroundColor: product.status === 'ACTIVE' 
-                          ? '#dcfce7'
-                          : product.status === 'DRAFT'
-                          ? '#f3f4f6'
-                          : product.status === 'PENDING'
-                          ? '#fef3c7'
-                          : '#fecaca',
+                          ? 'var(--product-dashboard-verified-bg, hsl(var(--primary)) / 0.1)'
+                          : 'var(--product-dashboard-unverified-bg, hsl(var(--secondary)) / 0.1)',
                         color: product.status === 'ACTIVE'
-                          ? '#166534'
-                          : product.status === 'DRAFT'
-                          ? '#374151'
-                          : product.status === 'PENDING'
-                          ? '#92400e'
-                          : '#991b1b'
+                          ? 'var(--product-dashboard-verified-text, hsl(var(--primary)))'
+                          : 'var(--product-dashboard-unverified-text, hsl(var(--secondary-foreground)))',
+                        textTransform: 'capitalize'
                       }}>
                         {product.status || 'N/A'}
                       </span>
@@ -882,17 +629,22 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                         borderRadius: '9999px',
                         fontSize: '0.75rem',
                         fontWeight: '500',
+                        border: '1.5px solid',
+                        borderColor: product.inventoryStatus === 'IN_STOCK' 
+                          ? '#16a34a'
+                          : product.inventoryStatus === 'LOW_STOCK'
+                          ? '#eab308'
+                          : '#dc2626',
                         backgroundColor: product.inventoryStatus === 'IN_STOCK' 
-                          ? 'hsl(var(--primary) / 0.1)'
+                          ? '#dcfce7'
                           : product.inventoryStatus === 'LOW_STOCK'
                           ? '#fef3c7'
-                          : 'hsl(var(--secondary) / 0.1)',
+                          : '#fecaca',
                         color: product.inventoryStatus === 'IN_STOCK'
-                          ? 'hsl(var(--primary))'
+                          ? '#166534'
                           : product.inventoryStatus === 'LOW_STOCK'
                           ? '#92400e'
-                          : 'hsl(var(--secondary-foreground))',
-                        textTransform: 'capitalize'
+                          : '#991b1b'
                       }}>
                         {(product.inventoryStatus || 'N/A').replace('_', ' ')}
                       </span>
@@ -900,7 +652,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                     
                     <div style={{ 
                       fontSize: '0.875rem',
-                      color: 'hsl(var(--muted-foreground))',
+                      color: 'var(--product-dashboard-muted, hsl(var(--muted-foreground)))',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '1rem'
@@ -910,7 +662,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                         SKU: {product.sku || 'N/A'}
                       </span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                        <TrendingUp size={14} color="rgb(107, 114, 128)" />
+                        <DollarSign size={14} color="rgb(107, 114, 128)" />
                         ${product.price || '0.00'}
                       </span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
@@ -931,8 +683,8 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                         style={{
                           padding: '0.5rem',
                           backgroundColor: 'transparent',
-                          color: 'hsl(var(--muted-foreground))',
-                          border: '1px solid hsl(var(--border))',
+                          color: 'var(--product-dashboard-icon-color, hsl(var(--muted-foreground)))',
+                          border: '1px solid var(--product-dashboard-icon-border, hsl(var(--border)))',
                           borderRadius: '0.5rem',
                           cursor: 'pointer',
                           fontSize: '0.75rem',
@@ -944,16 +696,16 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                           minHeight: '2rem'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = 'hsl(var(--accent))';
-                          e.currentTarget.style.color = 'hsl(var(--accent-foreground))';
-                          e.currentTarget.style.borderColor = 'hsl(var(--accent-foreground) / 0.2)';
+                          e.currentTarget.style.backgroundColor = 'var(--product-dashboard-icon-hover-bg, hsl(var(--accent)))';
+                          e.currentTarget.style.color = 'var(--product-dashboard-icon-hover-color, hsl(var(--accent-foreground)))';
+                          e.currentTarget.style.borderColor = 'var(--product-dashboard-icon-hover-border, hsl(var(--accent-foreground)) / 0.2)';
                           e.currentTarget.style.transform = 'translateY(-1px)';
-                          e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--muted) / 0.15)';
+                          e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--muted)) / 0.15';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.backgroundColor = 'transparent';
-                          e.currentTarget.style.color = 'hsl(var(--muted-foreground))';
-                          e.currentTarget.style.borderColor = 'hsl(var(--border))';
+                          e.currentTarget.style.color = 'var(--product-dashboard-icon-color, hsl(var(--muted-foreground)))';
+                          e.currentTarget.style.borderColor = 'var(--product-dashboard-icon-border, hsl(var(--border)))';
                           e.currentTarget.style.transform = 'translateY(0)';
                           e.currentTarget.style.boxShadow = 'none';
                         }}

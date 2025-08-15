@@ -1,14 +1,21 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Search, Filter, X } from 'lucide-react';
-import { Card, CardContent } from '@workspace/ui';
-import { Input } from '@workspace/ui';
-import { Button } from '@workspace/ui';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui';
+import React from 'react';
+import { 
+  EntitySearchAndFilters, 
+  FilterSection 
+} from '@workspace/shared';
+
+export interface ProductFilterState {
+  statuses: string[];
+  inventoryStatuses: string[];
+  categories: string[];
+  priceRanges: string[];
+}
 
 interface ProductsFiltersProps {
-  onSearch: (query: string) => void;
-  onFilterChange: (filters: any) => void;
+  onSearch?: (query: string) => void;
+  onFilterChange?: (filters: ProductFilterState) => void;
   loading?: boolean;
+  className?: string;
   searchResultsCount?: number;
   totalProductCount?: number;
   currentSearchQuery?: string;
@@ -17,132 +24,95 @@ interface ProductsFiltersProps {
 export const ProductsFilters: React.FC<ProductsFiltersProps> = ({
   onSearch,
   onFilterChange,
-  loading,
-  searchResultsCount = 0,
-  totalProductCount = 0,
-  currentSearchQuery = ''
+  loading = false,
+  className = '',
+  searchResultsCount,
+  totalProductCount,
+  currentSearchQuery
 }) => {
-  const [searchInput, setSearchInput] = useState(currentSearchQuery);
-  const [filters, setFilters] = useState({
-    status: 'all',
-    inventoryStatus: 'all',
-    category: 'all',
-    priceRange: 'all'
+  // Default filter state
+  const [filters, setFilters] = React.useState<ProductFilterState>({
+    statuses: [],
+    inventoryStatuses: [],
+    categories: [],
+    priceRanges: []
   });
 
-  const handleSearch = useCallback(() => {
-    onSearch(searchInput);
-  }, [searchInput, onSearch]);
+  // Define filter sections configuration
+  const filterSections: FilterSection<ProductFilterState>[] = [
+    {
+      key: 'statuses',
+      label: 'Status',
+      type: 'multiselect',
+      options: [
+        { label: 'Active', value: 'ACTIVE' },
+        { label: 'Draft', value: 'DRAFT' },
+        { label: 'Pending', value: 'PENDING' },
+        { label: 'Inactive', value: 'INACTIVE' },
+        { label: 'Archived', value: 'ARCHIVED' }
+      ]
+    },
+    {
+      key: 'inventoryStatuses',
+      label: 'Inventory Status',
+      type: 'multiselect',
+      options: [
+        { label: 'In Stock', value: 'IN_STOCK' },
+        { label: 'Low Stock', value: 'LOW_STOCK' },
+        { label: 'Out of Stock', value: 'OUT_OF_STOCK' },
+        { label: 'Back Order', value: 'BACK_ORDER' },
+        { label: 'Discontinued', value: 'DISCONTINUED' }
+      ]
+    },
+    {
+      key: 'categories',
+      label: 'Category',
+      type: 'multiselect',
+      options: [
+        { label: 'Electronics', value: 'cat-1' },
+        { label: 'Clothing', value: 'cat-2' },
+        { label: 'Books', value: 'cat-3' },
+        { label: 'Home & Garden', value: 'cat-4' },
+        { label: 'Sports & Outdoors', value: 'cat-5' }
+      ]
+    },
+    {
+      key: 'priceRanges',
+      label: 'Price Range',
+      type: 'multiselect',
+      options: [
+        { label: '$0 - $50', value: '0-50' },
+        { label: '$50 - $100', value: '50-100' },
+        { label: '$100 - $500', value: '100-500' },
+        { label: '$500+', value: '500+' }
+      ]
+    }
+  ];
 
-  const handleFilterUpdate = useCallback((key: string, value: string) => {
-    const newFilters = { ...filters, [key]: value };
+  const handleFiltersChange = (newFilters: ProductFilterState) => {
     setFilters(newFilters);
-    onFilterChange(newFilters);
-  }, [filters, onFilterChange]);
+    onFilterChange?.(newFilters);
+  };
 
-  const clearFilters = useCallback(() => {
-    setFilters({
-      status: 'all',
-      inventoryStatus: 'all',
-      category: 'all',
-      priceRange: 'all'
-    });
-    setSearchInput('');
-    onSearch('');
-    onFilterChange({});
-  }, [onSearch, onFilterChange]);
+  const handleSearch = (query: string) => {
+    onSearch?.(query);
+  };
 
   return (
-    <Card>
-      <CardContent className="p-4">
-        {/* Search Bar */}
-        <div className="flex gap-2 mb-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-            <Input
-              type="text"
-              placeholder="Search products by name, SKU, or description..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              className="pl-10"
-            />
-          </div>
-          <Button onClick={handleSearch} disabled={loading}>
-            Search
-          </Button>
-        </div>
-
-        {/* Filter Row */}
-        <div className="flex flex-wrap gap-2">
-          <Select value={filters.status} onValueChange={(value) => handleFilterUpdate('status', value)}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="ACTIVE">Active</SelectItem>
-              <SelectItem value="INACTIVE">Inactive</SelectItem>
-              <SelectItem value="DRAFT">Draft</SelectItem>
-              <SelectItem value="PENDING">Pending</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value={filters.inventoryStatus} onValueChange={(value) => handleFilterUpdate('inventoryStatus', value)}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Inventory" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Inventory</SelectItem>
-              <SelectItem value="IN_STOCK">In Stock</SelectItem>
-              <SelectItem value="LOW_STOCK">Low Stock</SelectItem>
-              <SelectItem value="OUT_OF_STOCK">Out of Stock</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value={filters.category} onValueChange={(value) => handleFilterUpdate('category', value)}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              <SelectItem value="electronics">Electronics</SelectItem>
-              <SelectItem value="clothing">Clothing</SelectItem>
-              <SelectItem value="food">Food</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value={filters.priceRange} onValueChange={(value) => handleFilterUpdate('priceRange', value)}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Price Range" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Prices</SelectItem>
-              <SelectItem value="0-50">$0 - $50</SelectItem>
-              <SelectItem value="50-100">$50 - $100</SelectItem>
-              <SelectItem value="100-500">$100 - $500</SelectItem>
-              <SelectItem value="500+">$500+</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Button 
-            variant="outline" 
-            onClick={clearFilters}
-            className="gap-2"
-          >
-            <X size={16} />
-            Clear Filters
-          </Button>
-        </div>
-
-        {/* Results Count */}
-        {currentSearchQuery && (
-          <div className="mt-3 text-sm text-muted-foreground">
-            Found {searchResultsCount} of {totalProductCount} products
-          </div>
-        )}
-      </CardContent>
-    </Card>
+    <EntitySearchAndFilters<ProductFilterState>
+      entityName="product"
+      placeholder="Search products by name, SKU, or description..."
+      onSearch={handleSearch}
+      loading={loading}
+      resultsCount={searchResultsCount}
+      totalCount={totalProductCount}
+      value={currentSearchQuery}
+      filterSections={filterSections}
+      filters={filters}
+      onFiltersChange={handleFiltersChange}
+      className={className}
+    />
   );
 };
+
+export default ProductsFilters;

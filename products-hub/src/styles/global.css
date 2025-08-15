@@ -23,7 +23,7 @@
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
     
-    /* Product Dashboard specific variables */
+    /* Product Dashboard specific variables - matching staff hub */
     --product-dashboard-border: hsl(var(--border));
     --product-dashboard-bulk-bg: hsl(var(--accent) / 0.1);
     --product-dashboard-accent: hsl(var(--accent));
@@ -42,6 +42,63 @@
     --product-dashboard-icon-hover-bg: hsl(var(--accent));
     --product-dashboard-icon-hover-color: hsl(var(--accent-foreground));
     --product-dashboard-icon-hover-border: hsl(var(--accent-foreground) / 0.2);
+
+    /* Product List specific variables - matching staff hub */
+    --product-list-item-padding: 1rem;
+    --product-list-border-color: hsl(var(--border));
+    --product-list-border-radius: 0.75rem;
+    --product-list-bg: hsl(var(--card));
+    --product-list-selected-border: hsl(var(--primary));
+    --product-list-selected-bg: hsl(var(--primary) / 0.05);
+    --product-list-selected-shadow: 0 4px 12px hsl(var(--primary) / 0.15);
+    --product-list-hover-bg: hsl(var(--accent));
+    --product-list-hover-shadow: 0 4px 12px hsl(var(--muted) / 0.15);
+    --product-list-shadow: 0 1px 3px hsl(var(--muted) / 0.1);
+    --product-list-avatar-bg: hsl(var(--primary));
+    --product-list-avatar-text: hsl(var(--primary-foreground));
+    --product-list-avatar-border: hsl(var(--background));
+    --product-list-name-color: hsl(var(--foreground));
+    --product-list-email-color: hsl(var(--muted-foreground));
+    --product-list-department-color: hsl(var(--muted-foreground));
+    --product-list-employment-color: hsl(var(--muted-foreground));
+    --product-list-chevron-color: hsl(var(--muted-foreground));
+    --product-list-status-active: #22c55e;
+    --product-list-status-inactive: #6b7280;
+    --product-list-empty-color: hsl(var(--muted-foreground));
+    --product-list-empty-bg: hsl(var(--muted));
+    --product-list-role-manager-bg: hsl(var(--primary) / 0.1);
+    --product-list-role-manager-text: hsl(var(--primary));
+    --product-list-role-employee-bg: hsl(var(--secondary) / 0.1);
+    --product-list-role-employee-text: hsl(var(--secondary-foreground));
+
+    /* Product Form specific variables - matching staff hub */
+    --product-form-bg: hsl(var(--card));
+    --product-form-container-border: hsl(var(--border));
+    --product-form-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --product-form-divider: hsl(var(--border));
+    --product-form-title-color: hsl(var(--foreground));
+    --product-form-subtitle-color: hsl(var(--muted-foreground));
+    --product-form-section-title: hsl(var(--foreground));
+    --product-form-section-border: hsl(var(--primary));
+    --product-form-label-color: hsl(var(--foreground));
+    --product-form-required-color: #ef4444;
+    --product-form-border: hsl(var(--border));
+    --product-form-input-bg: hsl(var(--background));
+    --product-form-input-text: hsl(var(--foreground));
+    --product-form-focus-border: hsl(var(--primary));
+    --product-form-focus-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+    --product-form-error-border: #ef4444;
+    --product-form-error-text: #ef4444;
+    --product-form-checkbox-color: hsl(var(--primary));
+    --product-form-checkbox-label: hsl(var(--foreground));
+    --product-form-cancel-border: hsl(var(--border));
+    --product-form-cancel-bg: hsl(var(--background));
+    --product-form-cancel-text: hsl(var(--foreground));
+    --product-form-cancel-hover-bg: hsl(var(--muted));
+    --product-form-submit-bg: hsl(var(--primary));
+    --product-form-submit-text: hsl(var(--primary-foreground));
+    --product-form-submit-hover-bg: hsl(var(--primary) / 0.9);
+    --product-form-submit-disabled-bg: hsl(var(--muted));
   }
 
   .dark {
