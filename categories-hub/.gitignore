@@ -1,0 +1,12 @@
+# MFE-specific ignores (most patterns handled by root .gitignore)
+
+# Module Federation specific
+@mf-types/
+@mf-types.zip
+remoteEntry.js
+
+# Rspack build cache
+.rspack/
+
+# Local environment overrides
+.env.mfe

@@ -1,0 +1,333 @@
+{
+  "id": "categoriesHub",
+  "name": "categoriesHub",
+  "metaData": {
+    "name": "categoriesHub",
+    "type": "app",
+    "buildInfo": {
+      "buildVersion": "0.1.0",
+      "buildName": "@ecommerce/categories-hub"
+    },
+    "remoteEntry": {
+      "name": "remoteEntry.js",
+      "path": "",
+      "type": "global"
+    },
+    "types": {
+      "path": "",
+      "name": "",
+      "zip": "@mf-types.zip",
+      "api": "@mf-types.d.ts"
+    },
+    "globalName": "categoriesHub",
+    "pluginVersion": "0.15.0",
+    "prefetchInterface": false,
+    "publicPath": "https://categories-hub.tesseract-hub.com/"
+  },
+  "shared": [
+    {
+      "id": "categoriesHub:@workspace/shared",
+      "name": "@workspace/shared",
+      "version": "0",
+      "singleton": true,
+      "requiredVersion": "workspace:*",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    },
+    {
+      "id": "categoriesHub:@workspace/ui",
+      "name": "@workspace/ui",
+      "version": "0",
+      "singleton": true,
+      "requiredVersion": "workspace:*",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    },
+    {
+      "id": "categoriesHub:react-dom",
+      "name": "react-dom",
+      "version": "19.1.1",
+      "singleton": true,
+      "requiredVersion": "^19.1.0",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    },
+    {
+      "id": "categoriesHub:react-router-dom",
+      "name": "react-router-dom",
+      "version": "7.8.0",
+      "singleton": true,
+      "requiredVersion": "^7.6.3",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "255.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    },
+    {
+      "id": "categoriesHub:react",
+      "name": "react",
+      "version": "19.1.1",
+      "singleton": true,
+      "requiredVersion": "^19.1.0",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    }
+  ],
+  "remotes": [],
+  "exposes": [
+    {
+      "id": "categoriesHub:CategoriesHub",
+      "name": "CategoriesHub",
+      "assets": {
+        "js": {
+          "sync": [
+            "784.js",
+            "__federation_expose_CategoryManagementDashboard.js",
+            "__federation_expose_useCategories.js",
+            "642.js",
+            "__federation_expose_CategoriesHub.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CategoriesHub"
+    },
+    {
+      "id": "categoriesHub:CategoriesList",
+      "name": "CategoriesList",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_CategoriesList.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CategoriesList"
+    },
+    {
+      "id": "categoriesHub:CategoryForm",
+      "name": "CategoryForm",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_CategoryForm.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CategoryForm"
+    },
+    {
+      "id": "categoriesHub:CategoryDetails",
+      "name": "CategoryDetails",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_CategoryDetails.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CategoryDetails"
+    },
+    {
+      "id": "categoriesHub:CategoryFilters",
+      "name": "CategoryFilters",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_CategoryFilters.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CategoryFilters"
+    },
+    {
+      "id": "categoriesHub:CategoryTree",
+      "name": "CategoryTree",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_CategoryTree.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CategoryTree"
+    },
+    {
+      "id": "categoriesHub:CategoryManagementDashboard",
+      "name": "CategoryManagementDashboard",
+      "assets": {
+        "js": {
+          "sync": [
+            "784.js",
+            "__federation_expose_CategoryManagementDashboard.js",
+            "__federation_expose_useCategories.js",
+            "642.js",
+            "__federation_expose_CategoriesHub.js",
+            "__federation_expose_components.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CategoryManagementDashboard"
+    },
+    {
+      "id": "categoriesHub:CategoryStatistics",
+      "name": "CategoryStatistics",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_CategoryStatistics.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CategoryStatistics"
+    },
+    {
+      "id": "categoriesHub:components",
+      "name": "components",
+      "assets": {
+        "js": {
+          "sync": [
+            "784.js",
+            "__federation_expose_CategoryManagementDashboard.js",
+            "__federation_expose_components.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./components"
+    },
+    {
+      "id": "categoriesHub:useCategories",
+      "name": "useCategories",
+      "assets": {
+        "js": {
+          "sync": [
+            "784.js",
+            "__federation_expose_CategoryManagementDashboard.js",
+            "__federation_expose_useCategories.js",
+            "642.js",
+            "__federation_expose_CategoriesHub.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./useCategories"
+    },
+    {
+      "id": "categoriesHub:categoriesApi",
+      "name": "categoriesApi",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_categoriesApi.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./categoriesApi"
+    }
+  ]
+}
