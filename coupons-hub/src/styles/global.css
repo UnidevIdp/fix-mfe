@@ -136,10 +136,3 @@
     @apply rounded-xl;
   }
 }
-  
-  .list-item-enhanced {
-    @apply rounded-xl border border-transparent hover:border-border;
-    @apply hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
-    @apply bg-card/50 hover:bg-card;
-  }
-}
