@@ -249,82 +249,87 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
       </div>
     );
   }
-
   // Generate breadcrumbs (only if router is available)
   const breadcrumbs = hasRouter ? getBreadcrumbs(
     location.pathname, 
     selectedCoupon ? selectedCoupon.code : undefined
   ) : [];
 
+  // Render breadcrumb navigation
+  const renderBreadcrumbs = () => {
+    if (!hasRouter || breadcrumbs.length === 0) return null;
+    
+    return (
+      <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
+        {breadcrumbs.map((crumb, index) => (
+          <React.Fragment key={crumb.href}>
+            {index > 0 && <span className="text-muted-foreground/60">/</span>}
+            {index === breadcrumbs.length - 1 ? (
+              <span className="text-foreground font-medium">{crumb.label}</span>
+            ) : (
+              <button
+                onClick={() => navigate(crumb.href)}
+                className="hover:text-foreground transition-colors"
+              >
+                {crumb.label}
+              </button>
+            )}
+          </React.Fragment>
+        ))}
+      </nav>
+    );
+  };
+
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Breadcrumb Navigation */}
-      {hasRouter && breadcrumbs.length > 0 && (
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
-          {breadcrumbs.map((crumb, index) => (
-            <React.Fragment key={crumb.href}>
-              {index > 0 && <span className="text-muted-foreground/60">/</span>}
-              {index === breadcrumbs.length - 1 ? (
-                <span className="text-foreground font-medium">{crumb.label}</span>
-              ) : (
-                <button
-                  onClick={() => navigate(crumb.href)}
-                  className="hover:text-foreground transition-colors"
-                >
-                  {crumb.label}
-                </button>
-              )}
-            </React.Fragment>
-          ))}
-        </nav>
-      )}
+      {renderBreadcrumbs()}
       
       {/* Analytics Dashboard */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="flex gap-4 mb-6">
         {[
           { 
             icon: Ticket, 
             value: analytics.total, 
             label: 'Total Coupons',
-            color: 'rgb(59, 130, 246)',
-            bgColor: 'rgb(219, 234, 254)'
+            color: 'rgb(59, 130, 246)', // blue-500
+            bgColor: 'rgb(219, 234, 254)' // blue-100
           },
           { 
             icon: UserCheck, 
             value: analytics.active, 
             label: 'Active',
-            color: 'rgb(34, 197, 94)',
-            bgColor: 'rgb(220, 252, 231)'
+            color: 'rgb(34, 197, 94)', // green-500
+            bgColor: 'rgb(220, 252, 231)' // green-100
           },
           { 
             icon: UserX, 
             value: analytics.expired, 
             label: 'Expired',
-            color: 'rgb(239, 68, 68)',
-            bgColor: 'rgb(254, 226, 226)'
+            color: 'rgb(239, 68, 68)', // red-500
+            bgColor: 'rgb(254, 226, 226)' // red-100
           },
           { 
             icon: DollarSign, 
             value: `$${analytics.totalSavings.toFixed(0)}`, 
             label: 'Total Savings',
-            color: 'rgb(168, 85, 247)',
-            bgColor: 'rgb(243, 232, 255)'
+            color: 'rgb(168, 85, 247)', // purple-500
+            bgColor: 'rgb(243, 232, 255)' // purple-100
           }
         ].map(({ icon: Icon, value, label, color, bgColor }) => (
-          <Card key={label} className="analytics-card-modern group">
+          <Card key={label} className="flex-1 hover:shadow-lg transition-all duration-300 border-l-4" 
+                style={{ borderLeftColor: color }}>
             <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div 
-                  className="flex items-center justify-center w-12 h-12 rounded-xl shadow-sm group-hover:shadow-md transition-all duration-200" 
-                  style={{ backgroundColor: bgColor }}
-                >
-                  <Icon size={20} color={color} className="group-hover:scale-110 transition-transform duration-200" />
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full" 
+                     style={{ backgroundColor: bgColor }}>
+                  <Icon size={18} color={color} />
                 </div>
-                <div className="flex-1">
-                  <div className="text-2xl font-bold text-slate-900 group-hover:text-slate-800 transition-colors">
+                <div>
+                  <div className="text-2xl font-bold text-foreground">
                     {value}
                   </div>
-                  <div className="text-sm text-slate-600 font-medium">
+                  <div className="text-sm text-muted-foreground">
                     {label}
                   </div>
                 </div>
@@ -335,27 +340,25 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
       </div>
 
       {/* Action Bar */}
-      <Card className="card-modern mb-6">
+      <Card>
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <div>
-                <h2 className="text-xl font-bold text-slate-900">Coupon Directory</h2>
-                <p className="text-sm text-slate-600 mt-1">Manage and track promotional coupons</p>
-              </div>
-              
+            {/* Left side: title + bulk selection info */}
+            <div className="flex items-center gap-4">
+              <h2 className="text-xl font-semibold text-foreground">Coupon Directory</h2>
+
               {selectedForBulk.length > 0 && (
-                <div className="flex items-center gap-3 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
-                  <span className="text-sm font-medium text-emerald-700">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">
                     {selectedForBulk.length} selected
                   </span>
                   
                   <Select value={bulkAction} onValueChange={(value) => setBulkAction(value as any)}>
-                    <SelectTrigger className="w-36 h-8 text-xs">
+                    <SelectTrigger className="w-32">
                       <SelectValue placeholder="Bulk Actions" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">Choose Action</SelectItem>
+                    <SelectContent className="bg-background border border-border shadow-lg">
+                      <SelectItem value="none">Bulk Actions</SelectItem>
                       <SelectItem value="activate">Activate</SelectItem>
                       <SelectItem value="deactivate">Deactivate</SelectItem>
                       <SelectItem value="delete">Delete</SelectItem>
@@ -366,7 +369,6 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                     disabled={bulkAction === 'none'}
                     size="sm"
                     variant={bulkAction === 'delete' ? 'destructive' : 'default'}
-                    className="h-8 px-3 text-xs"
                   >
                     Apply
                   </Button>
@@ -374,14 +376,16 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
               )}
             </div>
 
-            <div className="flex items-center gap-3">
+            {/* Right side: actions */}
+            <div className="flex items-center gap-2">
               <Button 
                 variant="outline"
                 onClick={onRefresh || (() => {})} 
-                className="btn-modern-outline btn-modern-outline-neutral"
+                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:text-slate-700 hover:border-slate-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-white/80 backdrop-blur-sm"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                 <div className="relative flex items-center gap-2">
-                  <RefreshCw size={16} className="btn-icon-rotate-180" />
+                  <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-300" />
                   Refresh
                 </div>
               </Button>
@@ -389,20 +393,22 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
               <Button 
                 variant="outline"
                 onClick={() => setViewMode('bulk')} 
-                className="btn-modern-outline btn-modern-outline-accent"
+                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:text-indigo-700 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-indigo-50/50 backdrop-blur-sm"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                 <div className="relative flex items-center gap-2">
-                  <Settings2 size={16} className="btn-icon-rotate-90" />
+                  <Settings2 size={16} className="group-hover:rotate-90 transition-transform duration-300" />
                   Bulk Manage
                 </div>
               </Button>
               
               <Button 
                 onClick={handleCreateNew} 
-                className="btn-modern-primary"
+                className="group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                 <div className="relative flex items-center gap-2">
-                  <Plus size={16} className="btn-icon-rotate-90" />
+                  <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
                   Add Coupon
                 </div>
               </Button>
@@ -422,170 +428,303 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
 
       {/* Bulk Selection Controls */}
       {viewMode === 'bulk' && (
-        <Card className="bg-emerald-50/50 border-emerald-200 mb-6">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <h3 className="text-base font-semibold text-emerald-800">
-                  Bulk Management Mode
-                </h3>
-                <Button 
-                  size="sm" 
-                  variant="outline"
-                  onClick={handleSelectAll}
-                  className="text-emerald-600 border-emerald-300 hover:bg-emerald-100"
-                >
-                  {selectedForBulk.length === coupons.length ? 'Deselect All' : 'Select All'}
-                </Button>
-              </div>
-              
-              <Button 
-                size="sm" 
-                variant="outline" 
-                onClick={() => setViewMode('list')}
-                className="text-slate-600 border-slate-300 hover:bg-slate-100"
-              >
-                Exit Bulk Mode
+        <div style={{
+          padding: '1rem',
+          backgroundColor: 'var(--coupon-dashboard-bulk-bg, hsl(var(--accent) / 0.1))',
+          borderRadius: '0.75rem',
+          border: '1px solid var(--coupon-dashboard-accent, hsl(var(--accent)))'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <h3 className="text-base font-semibold">
+                Bulk Management Mode
+              </h3>
+              <Button size="sm" onClick={handleSelectAll}>
+                {selectedForBulk.length === coupons.length ? 'Deselect All' : 'Select All'}
               </Button>
             </div>
-          </CardContent>
-        </Card>
+            
+            <Button size="sm" variant="outline" onClick={() => setViewMode('list')}>
+              Exit Bulk Mode
+            </Button>
+          </div>
+        </div>
       )}
 
       {/* Enhanced Coupon List */}
       <Card className="overflow-hidden">
         {error ? (
-          <div className="p-12 text-center">
-            <div className="flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mx-auto mb-4">
-              <AlertCircle size={32} className="text-red-500" />
+          <div style={{
+            padding: '3rem',
+            textAlign: 'center'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              width: '80px',
+              height: '80px',
+              backgroundColor: 'rgb(254, 226, 226)', // red-100
+              borderRadius: '50%',
+              margin: '0 auto 1rem auto'
+            }}>
+              <AlertCircle size={32} color="rgb(239, 68, 68)" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+            <h3 style={{ 
+              color: 'var(--foreground)',
+              marginBottom: '0.5rem',
+              fontSize: '1.25rem',
+              fontWeight: '600'
+            }}>
               Failed to Load Coupon Data
             </h3>
-            <p className="text-sm text-slate-600 mb-6">
+            <p style={{ 
+              color: 'var(--muted-foreground)',
+              marginBottom: '1.5rem',
+              fontSize: '0.875rem'
+            }}>
               {error}
             </p>
-            <Button
+            <button
               onClick={onRefresh || (() => {})}
-              className="btn-modern-primary"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.75rem 1.5rem',
+                backgroundColor: 'rgb(59, 130, 246)', // blue-500
+                color: 'white',
+                border: 'none',
+                borderRadius: '0.5rem',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s ease-in-out'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgb(37, 99, 235)'; // blue-600
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgb(59, 130, 246)'; // blue-500
+              }}
             >
-              <div className="relative flex items-center gap-2">
-                <RefreshCw size={16} />
-                Try Again
-              </div>
-            </Button>
+              <RefreshCw size={16} />
+              Try Again
+            </button>
           </div>
         ) : coupons.length === 0 ? (
-          <div className="p-12 text-center">
-            <div className="flex items-center justify-center w-20 h-20 bg-slate-100 rounded-full mx-auto mb-4">
-              <Search size={32} className="text-slate-400" />
+          <div style={{
+            padding: '3rem',
+            textAlign: 'center',
+            color: 'var(--muted-foreground)'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              width: '80px',
+              height: '80px',
+              backgroundColor: 'rgb(243, 244, 246)', // gray-100
+              borderRadius: '50%',
+              margin: '0 auto 1rem auto'
+            }}>
+              <Search size={32} color="rgb(107, 114, 128)" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">No coupons found</h3>
-            <p className="text-sm text-slate-600 mb-6">
-              Try adjusting your search criteria or add your first coupon.
-            </p>
-            <Button
-              onClick={handleCreateNew}
-              className="btn-modern-primary"
-            >
-              <div className="relative flex items-center gap-2">
-                <Plus size={16} />
-                Create First Coupon
-              </div>
-            </Button>
+            <h3>No coupons found</h3>
+            <p>Try adjusting your search criteria or add your first coupon.</p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div style={{ overflow: 'auto', maxHeight: '600px' }}>
             {coupons.map((coupon, index) => {
               const isSelected = selectedForBulk.includes(coupon.id);
+              const isEven = index % 2 === 0;
               
               return (
                 <div
                   key={coupon.id}
-                  className="list-item-modern p-4 cursor-pointer group"
-                  onClick={() => !viewMode.includes('bulk') && handleViewDetail(coupon)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: 'var(--coupon-list-item-padding, 1.25rem)',
+                    backgroundColor: isEven 
+                      ? 'transparent'
+                      : 'hsl(var(--muted) / 0.05)',
+                    borderBottom: index < coupons.length - 1 
+                      ? '1px solid hsl(var(--border))'
+                      : 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease-in-out',
+                    borderRadius: '0.75rem',
+                    margin: '0.25rem 0',
+                    border: '1px solid transparent'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'hsl(var(--accent) / 0.1)';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px hsl(var(--muted) / 0.15)';
+                    e.currentTarget.style.borderColor = 'hsl(var(--border))';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = isEven 
+                      ? 'transparent'
+                      : 'hsl(var(--muted) / 0.05)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.borderColor = 'transparent';
+                  }}
                 >
-                  <div className="flex items-center gap-4">
-                    {/* Bulk selection checkbox */}
-                    {viewMode === 'bulk' && (
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={(e) => handleBulkSelect(coupon.id, e.target.checked)}
-                        className="w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500"
-                        onClick={(e) => e.stopPropagation()}
-                      />
+                  {/* Bulk selection checkbox */}
+                  {viewMode === 'bulk' && (
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={(e) => handleBulkSelect(coupon.id, e.target.checked)}
+                      style={{ marginRight: '1rem' }}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  )}
+                  
+                  {/* Avatar */}
+                  <div style={{
+                    width: '3rem',
+                    height: '3rem',
+                    borderRadius: '50%',
+                    backgroundColor: 'hsl(var(--primary))',
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    marginRight: '1rem',
+                    flexShrink: 0,
+                    border: '2px solid hsl(var(--background))',
+                    boxShadow: '0 2px 8px hsl(var(--muted) / 0.15)'
+                  }}>
+                    {coupon.discountType === 'percentage' ? (
+                      <Percent size={20} />
+                    ) : (
+                      <DollarSign size={20} />
                     )}
-                    
-                    {/* Avatar */}
-                    <div className="relative">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-semibold shadow-md group-hover:shadow-lg transition-all duration-200 group-hover:scale-105">
-                        {coupon.discountType === 'percentage' ? (
-                          <Percent size={20} />
-                        ) : (
-                          <DollarSign size={20} />
-                        )}
-                      </div>
-                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white shadow-sm ${
-                        coupon.isActive ? 'bg-emerald-500' : 'bg-slate-400'
-                      }`} />
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-slate-900 truncate group-hover:text-slate-800 transition-colors">
-                          {coupon.code || 'Unknown Coupon'}
-                        </h3>
-                        
-                        <Badge className={`text-xs font-medium ${
-                          coupon.status === 'active' 
-                            ? 'bg-emerald-100 text-emerald-700 border-emerald-200' 
-                            : 'bg-slate-100 text-slate-600 border-slate-200'
-                        }`}>
-                          {coupon.status || 'N/A'}
-                        </Badge>
-                        
-                        <Badge className={`text-xs font-medium ${
-                          coupon.usageCount > 0
-                            ? 'bg-blue-100 text-blue-700 border-blue-200'
-                            : 'bg-slate-100 text-slate-600 border-slate-200'
-                        }`}>
-                          {coupon.usageCount > 0 ? `Used ${coupon.usageCount}x` : 'Unused'}
-                        </Badge>
-                      </div>
+                  </div>
+                  
+                  {/* Details */}
+                  <div 
+                    style={{ flex: 1, minWidth: 0 }}
+                    onClick={() => viewMode !== 'bulk' && handleViewDetail(coupon)}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                      <h4 style={{ 
+                        margin: 0, 
+                        fontSize: '1rem',
+                        fontWeight: '600',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        {coupon.code || 'Unknown Coupon'}
+                      </h4>
                       
-                      <div className="flex items-center gap-4 text-sm text-slate-600">
-                        <span className="flex items-center gap-1">
-                          <Percent size={14} />
-                          {coupon.discountType === 'percentage' ? `${coupon.discountValue}%` : `$${coupon.discountValue}`}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar size={14} />
-                          Expires: {coupon.expiryDate ? new Date(coupon.expiryDate).toLocaleDateString() : 'N/A'}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users size={14} />
-                          Limit: {coupon.usageLimit || 'Unlimited'}
-                        </span>
-                      </div>
+                      <span style={{
+                        padding: '0.125rem 0.5rem',
+                        borderRadius: '9999px',
+                        fontSize: '0.75rem',
+                        fontWeight: '500',
+                        backgroundColor: coupon.status === 'active' 
+                          ? 'hsl(var(--primary) / 0.1)'
+                          : 'hsl(var(--secondary) / 0.1)',
+                        color: coupon.status === 'active'
+                          ? 'hsl(var(--primary))'
+                          : 'hsl(var(--secondary-foreground))',
+                        textTransform: 'capitalize'
+                      }}>
+                        {coupon.status || 'N/A'}
+                      </span>
+                      
+                      <span style={{
+                        padding: '0.125rem 0.5rem',
+                        borderRadius: '9999px',
+                        fontSize: '0.75rem',
+                        fontWeight: '500',
+                        border: '1.5px solid',
+                        borderColor: coupon.usageCount > 0 
+                          ? '#16a34a'
+                          : '#6b7280',
+                        backgroundColor: coupon.usageCount > 0 
+                          ? '#dcfce7'
+                          : '#f3f4f6',
+                        color: coupon.usageCount > 0
+                          ? '#166534'
+                          : '#374151'
+                      }}>
+                        {coupon.usageCount > 0 ? `Used ${coupon.usageCount}x` : 'Unused'}
+                      </span>
                     </div>
                     
-                    {/* Action Button */}
-                    {viewMode !== 'bulk' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg"
+                    <div style={{ 
+                      fontSize: '0.875rem',
+                      color: 'hsl(var(--muted-foreground))',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem'
+                    }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                        <Percent size={14} color="rgb(107, 114, 128)" />
+                        {coupon.discountType === 'percentage' ? `${coupon.discountValue}%` : `$${coupon.discountValue}`}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                        <Calendar size={14} color="rgb(107, 114, 128)" />
+                        Expires: {coupon.expiryDate ? new Date(coupon.expiryDate).toLocaleDateString() : 'N/A'}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                        <Users size={14} color="rgb(107, 114, 128)" />
+                        Limit: {coupon.usageLimit || 'Unlimited'}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Quick actions */}
+                  {viewMode !== 'bulk' && (
+                    <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem' }}>
+                      <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleViewDetail(coupon);
                         }}
+                        style={{
+                          padding: '0.5rem',
+                          backgroundColor: 'transparent',
+                          color: 'hsl(var(--muted-foreground))',
+                          border: '1px solid hsl(var(--border))',
+                          borderRadius: '0.5rem',
+                          cursor: 'pointer',
+                          fontSize: '0.75rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'all 0.2s ease-in-out',
+                          minWidth: '2rem',
+                          minHeight: '2rem'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = 'hsl(var(--accent))';
+                          e.currentTarget.style.color = 'hsl(var(--accent-foreground))';
+                          e.currentTarget.style.borderColor = 'hsl(var(--accent-foreground) / 0.2)';
+                          e.currentTarget.style.transform = 'translateY(-1px)';
+                          e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--muted) / 0.15)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = 'hsl(var(--muted-foreground))';
+                          e.currentTarget.style.borderColor = 'hsl(var(--border))';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
                       >
                         <Eye size={16} />
-                      </Button>
-                    )}
-                  </div>
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}
