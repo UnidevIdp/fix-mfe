@@ -409,36 +409,36 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
                   </Button>
                 </div>
               )}
-        </div>
+            </div>
 
-        <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={onRefresh}
-              className="group relative overflow-hidden border-slate-200 bg-white/80 backdrop-blur-sm hover:bg-slate-50 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <RefreshCw size={16} className="mr-2 group-hover:rotate-180 transition-transform duration-300" />
-              Refresh
-            </Button>
-            
-            <Button
-              variant="outline"
-              onClick={() => setViewMode('bulk')}
-              className="group relative overflow-hidden border-indigo-200 bg-indigo-50/50 text-indigo-600 backdrop-blur-sm hover:bg-indigo-100 hover:border-indigo-300 hover:text-indigo-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <Settings2 size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
-              Bulk Manage
-            </Button>
-            
-            <Button
-              onClick={handleCreateNew}
-              className="group relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 px-6"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-              <Plus size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
-              <span className="relative font-semibold">Add Staff</span>
-            </Button>
-          </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={onRefresh}
+                className="group relative overflow-hidden border-slate-200 bg-white/80 backdrop-blur-sm hover:bg-slate-50 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <RefreshCw size={16} className="mr-2 group-hover:rotate-180 transition-transform duration-300" />
+                Refresh
+              </Button>
+              
+              <Button
+                variant="outline"
+                onClick={() => setViewMode('bulk')}
+                className="group relative overflow-hidden border-indigo-200 bg-indigo-50/50 text-indigo-600 backdrop-blur-sm hover:bg-indigo-100 hover:border-indigo-300 hover:text-indigo-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <Settings2 size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+                Bulk Manage
+              </Button>
+              
+              <Button
+                onClick={handleCreateNew}
+                className="group relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 px-6"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                <Plus size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+                <span className="relative font-semibold">Add Staff</span>
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -446,43 +446,10 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
       {/* Search and Filters */}
       <StaffFilters
         onSearch={onSearch}
-            <div className="flex items-center gap-3">
-              {/* Refresh Button */}
-              <Button
-                variant="outline"
-                size="default"
-                onClick={onRefresh}
-                className="btn-modern-outline group"
-              >
-                <RefreshCw size={16} className="mr-2 group-hover:rotate-180 transition-transform duration-300" />
-                Refresh
-              </Button>
-              
-              {/* Bulk Manage Button */}
-              <Button
-                variant="outline"
-                size="default"
-                onClick={() => setViewMode('bulk')}
-                className="btn-modern-accent group"
-              >
-                <Settings2 size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
-                Bulk Manage
-              </Button>
-              
-              {/* Add Staff Button */}
-              <Button
-                size="default"
-                onClick={handleCreateNew}
-                className="btn-modern-primary group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                <Plus size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300 relative z-10" />
-                <span className="relative z-10 font-semibold">Add Staff</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+        onFilterChange={onFilterChange}
+        searchQuery={searchQuery}
+        filters={filters}
+      />
 
       {/* Enhanced Staff List */}
       <Card className="overflow-hidden">
