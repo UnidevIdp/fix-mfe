@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { Product } from '../services/productsApi';
 import { useProducts, useDeleteProduct, useUpdateProductStatus } from '../hooks/useProducts';
 import { useMfeRouter } from '@workspace/shared';
 import { ProductsManagementDashboard } from './ProductsManagementDashboard';
+import { useMemo } from 'react';
 
 interface ProductsManagementProps {
   initialViewMode?: 'list' | 'detail' | 'create' | 'edit';
@@ -15,9 +15,10 @@ export const ProductsManagement: React.FC<ProductsManagementProps> = ({
   let id: string | undefined;
   
   try {
-    // Try to get params from React Router
-    const params = useParams<{ id: string }>();
-    id = params.id;
+    // Try to get ID from URL path
+    const path = window.location.pathname;
+    const match = path.match(/\/products\/([^\/]+)/);
+    id = match ? match[1] : undefined;
   } catch (error) {
     // Fallback for MFE context
     id = undefined;
