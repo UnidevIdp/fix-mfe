@@ -1,7 +1,6 @@
 import React from 'react';
-import { Search, Filter, X, Calendar, Tag, DollarSign, ToggleLeft } from 'lucide-react';
 import { EntitySearchAndFilters } from '@workspace/shared';
-import { CouponFiltersType, CouponStatus, CouponScope, DiscountType } from '../types/coupon.types';
+import { CouponFiltersType } from '../types/coupon.types';
 
 interface CouponsFiltersProps {
   searchQuery?: string;
@@ -20,77 +19,72 @@ export const CouponsFilters: React.FC<CouponsFiltersProps> = ({
   onClearFilters,
   className = ''
 }) => {
-  const filterOptions = [
+  const filterSections = [
     {
       key: 'status',
       label: 'Status',
-      icon: Tag,
       type: 'select' as const,
       options: [
-        { value: CouponStatus.ACTIVE, label: 'Active' },
-        { value: CouponStatus.EXPIRED, label: 'Expired' },
-        { value: CouponStatus.SCHEDULED, label: 'Scheduled' },
-        { value: CouponStatus.INACTIVE, label: 'Inactive' },
-        { value: CouponStatus.SUSPENDED, label: 'Suspended' }
-      ],
-      value: filters.status
+        { value: 'active', label: 'Active' },
+        { value: 'expired', label: 'Expired' },
+        { value: 'scheduled', label: 'Scheduled' },
+        { value: 'inactive', label: 'Inactive' }
+      ]
     },
     {
       key: 'scope',
       label: 'Scope',
-      icon: Filter,
       type: 'select' as const,
       options: [
-        { value: CouponScope.GLOBAL, label: 'Global' },
-        { value: CouponScope.TENANT, label: 'Tenant' },
-        { value: CouponScope.USER_GROUP, label: 'User Group' },
-        { value: CouponScope.SPECIFIC_USERS, label: 'Specific Users' }
-      ],
-      value: filters.scope
+        { value: 'global', label: 'Global' },
+        { value: 'tenant', label: 'Tenant' },
+        { value: 'vendor', label: 'Vendor' },
+        { value: 'category', label: 'Category' }
+      ]
     },
     {
       key: 'discountType',
       label: 'Discount Type',
-      icon: DollarSign,
       type: 'select' as const,
       options: [
-        { value: DiscountType.PERCENTAGE, label: 'Percentage' },
-        { value: DiscountType.FIXED_AMOUNT, label: 'Fixed Amount' },
-        { value: DiscountType.FREE_SHIPPING, label: 'Free Shipping' },
-        { value: DiscountType.BUY_X_GET_Y, label: 'Buy X Get Y' }
-      ],
-      value: filters.discountType
+        { value: 'percentage', label: 'Percentage' },
+        { value: 'fixed_amount', label: 'Fixed Amount' },
+        { value: 'free_shipping', label: 'Free Shipping' },
+        { value: 'buy_x_get_y', label: 'Buy X Get Y' }
+      ]
     },
     {
       key: 'isActive',
       label: 'Active Only',
-      icon: ToggleLeft,
-      type: 'boolean' as const,
-      value: filters.isActive
-    },
-    {
-      key: 'validFrom',
-      label: 'Valid From',
-      icon: Calendar,
-      type: 'date' as const,
-      value: filters.validFrom
-    },
-    {
-      key: 'validUntil',
-      label: 'Valid Until',
-      icon: Calendar,
-      type: 'date' as const,
-      value: filters.validUntil
+      type: 'select' as const,
+      options: [
+        { value: undefined, label: 'All' },
+        { value: true, label: 'Active' },
+        { value: false, label: 'Inactive' }
+      ]
     }
   ];
 
-  const handleFilterUpdate = (key: string, value: any) => {
-    const newFilters = { ...filters, [key]: value };
+  const handleFiltersChange = (newFilters: CouponFiltersType) => {
     onFilterChange?.(newFilters);
   };
 
   return (
-    <EntitySearchAndFilters
+    <EntitySearchAndFilters<CouponFiltersType>
+      entityName="coupons"
+      placeholder="Search coupons by code or description..."
+      onSearch={onSearchChange}
+      loading={false}
+      value={searchQuery}
+      filterSections={filterSections}
+      filters={filters}
+      onFiltersChange={handleFiltersChange}
+      className={className}
+    />
+  );
+};
+
+export default CouponsFilters;
       searchQuery={searchQuery}
       onSearchChange={onSearchChange}
       filters={filterOptions}

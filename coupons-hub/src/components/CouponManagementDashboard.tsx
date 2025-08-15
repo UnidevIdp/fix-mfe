@@ -1,15 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Coupon } from '../types/coupon.types';
-import { Ticket, TrendingUp, AlertTriangle, Search, RefreshCw, Plus, Eye, Edit, Trash2, Mail, Building2, Briefcase, Users, UserCheck, UserX, Crown, Settings2, ArrowLeft, Calendar, DollarSign, Percent } from 'lucide-react';
+import { Coupon, CouponFiltersType } from '../types/coupon.types';
+import { Ticket, UserCheck, UserX, DollarSign, Search, RefreshCw, Plus, Eye, Settings2, AlertCircle, Calendar, Percent, Users } from 'lucide-react';
 import { useMfeRouter } from '@workspace/shared';
 import { CouponRoutes, getBreadcrumbs } from '../utils/routing';
-import { Button } from '@workspace/ui';
-import { Card, CardContent, CardHeader, CardTitle } from '@workspace/ui';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui';
-import { Input } from '@workspace/ui';
-import { Badge } from '@workspace/ui';
+import { Button, Card, CardContent, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui';
 import { useCoupons } from '../hooks/useCoupons';
-import { CouponFiltersType } from '../types/coupon.types';
+import { CouponsFilters } from './CouponsFilters';
+import { CouponDetailPage } from './CouponDetailPage';
+import { CouponFormStepper } from './forms/CouponFormStepper';
 
 interface CouponManagementDashboardProps {
   // Coupon data
@@ -181,16 +179,76 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
     }
   }, [coupons, selectedForBulk.length]);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800 border-green-200';
-      case 'expired': return 'bg-red-100 text-red-800 border-red-200';
-      case 'scheduled': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'draft': return 'bg-gray-100 text-gray-800 border-gray-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
+  // Detail view
+  if (viewMode === 'detail' && selectedCoupon) {
+    return (
+      <CouponDetailPage
+        couponId={selectedCoupon.id}
+        onBack={handleBackToList}
+        onEdit={async (updatedCoupon) => {
+          await onCouponUpdate?.(updatedCoupon.id, updatedCoupon);
+          onRefresh?.();
+        }}
+        onEditMode={() => {
+          navigate(CouponRoutes.edit(selectedCoupon.id));
+        }}
+        onDelete={async (couponId) => {
+          await onCouponDelete?.(couponId);
+          handleBackToList();
+          onRefresh?.();
+        }}
+      />
+    );
+  }
 
+  // Create view
+  if (viewMode === 'create') {
+    return (
+      <div style={{ width: '100%', margin: '0 auto' }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: '2rem'
+        }}>
+          <button
+            onClick={handleBackToList}
+            style={{
+              padding: '0.5rem',
+              backgroundColor: 'transparent',
+              border: '1px solid var(--coupon-dashboard-border, hsl(var(--border)))',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: '1rem'
+            }}
+          >
+            ← Back to Coupon List
+          </button>
+          <h2 style={{ margin: 0, fontSize: '1.5rem' }}>
+            Add New Coupon
+          </h2>
+        </div>
+        
+        <CouponFormStepper
+          onSubmit={async (data) => {
+            try {
+              const newCoupon = await onCouponCreate?.(data);
+              if (newCoupon) {
+                handleBackToList();
+                onRefresh?.();
+              }
+            } catch (error) {
+              console.error('Failed to create coupon:', error);
+            }
+          }}
+          onCancel={handleBackToList}
+          loading={loading}
+        />
+      </div>
+    );
+  }
   // Generate breadcrumbs (only if router is available)
   const breadcrumbs = hasRouter ? getBreadcrumbs(
     location.pathname, 
@@ -259,8 +317,9 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
             bgColor: 'rgb(243, 232, 255)' // purple-100
           }
         ].map(({ icon: Icon, value, label, color, bgColor }) => (
-          <Card key={label} className="flex-1 hover:shadow-md transition-all duration-200">
-            <CardContent className="p-4">
+          <Card key={label} className="flex-1 hover:shadow-lg transition-all duration-300 border-l-4" 
+                style={{ borderLeftColor: color }}>
+            <CardContent className="p-6">
               <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center w-10 h-10 rounded-full" 
                      style={{ backgroundColor: bgColor }}>
@@ -281,8 +340,8 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
       </div>
 
       {/* Action Bar */}
-      <Card>
-        <CardContent className="p-4">
+      <Card className="hover:shadow-md transition-shadow duration-200">
+        <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <h2 className="text-xl font-semibold">Coupon Directory</h2>
@@ -317,17 +376,17 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
             </div>
 
             <div className="flex gap-2">
-              <Button variant="outline" onClick={onRefresh || (() => {})} className="gap-2">
+              <Button variant="outline" onClick={onRefresh || (() => {})} className="gap-2 hover:bg-accent transition-colors">
                 <RefreshCw size={16} />
                 Refresh
               </Button>
               
-              <Button variant="secondary" onClick={() => setViewMode('bulk')} className="gap-2">
+              <Button variant="secondary" onClick={() => setViewMode('bulk')} className="gap-2 hover:bg-secondary/80 transition-colors">
                 <Settings2 size={16} />
                 Bulk Manage
               </Button>
               
-              <Button onClick={handleCreateNew} className="gap-2 px-6 py-2 text-sm font-semibold shadow-md hover:shadow-lg bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleCreateNew} className="gap-2 px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
                 <Plus size={16} />
                 Add Coupon
               </Button>
@@ -335,6 +394,15 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
           </div>
         </CardContent>
       </Card>
+
+      {/* Search and Filters */}
+      <CouponsFilters
+        searchQuery={propsSearchQuery}
+        filters={propsFilters}
+        onSearchChange={onSearch}
+        onFilterChange={onFilterChange}
+        className="mb-6"
+      />
 
       {/* Bulk Selection Controls */}
       {viewMode === 'bulk' && (
@@ -378,7 +446,7 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
               borderRadius: '50%',
               margin: '0 auto 1rem auto'
             }}>
-              <AlertTriangle size={32} color="rgb(239, 68, 68)" />
+              <AlertCircle size={32} color="rgb(239, 68, 68)" />
             </div>
             <h3 style={{ 
               color: 'var(--foreground)',
@@ -455,23 +523,27 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: 'var(--coupon-list-item-padding, 1rem)',
+                    padding: '1rem',
                     backgroundColor: isEven 
-                      ? 'var(--coupon-list-row-even, transparent)'
-                      : 'var(--coupon-list-row-odd, hsl(var(--muted)) / 0.05)',
+                      ? 'transparent'
+                      : 'hsl(var(--muted)) / 0.05',
                     borderBottom: index < coupons.length - 1 
-                      ? '1px solid var(--coupon-list-border, hsl(var(--border)))'
+                      ? '1px solid hsl(var(--border))'
                       : 'none',
                     cursor: 'pointer',
-                    transition: 'background-color 0.2s ease'
+                    transition: 'all 0.2s ease-in-out'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--coupon-list-hover, hsl(var(--accent)) / 0.1)';
+                    e.currentTarget.style.backgroundColor = 'hsl(var(--accent)) / 0.1';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px hsl(var(--muted)) / 0.15';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = isEven 
-                      ? 'var(--coupon-list-row-even, transparent)'
-                      : 'var(--coupon-list-row-odd, hsl(var(--muted)) / 0.05)';
+                      ? 'transparent'
+                      : 'hsl(var(--muted)) / 0.05';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   {/* Bulk selection checkbox */}
@@ -490,7 +562,7 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                     width: '3rem',
                     height: '3rem',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--coupon-list-avatar-bg, hsl(var(--primary)))',
+                    backgroundColor: 'hsl(var(--primary))',
                     color: 'white',
                     display: 'flex',
                     alignItems: 'center',
@@ -498,7 +570,9 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                     fontSize: '1rem',
                     fontWeight: '600',
                     marginRight: '1rem',
-                    flexShrink: 0
+                    flexShrink: 0,
+                    border: '2px solid hsl(var(--background))',
+                    boxShadow: '0 2px 8px hsl(var(--muted)) / 0.15'
                   }}>
                     {coupon.discountType === 'percentage' ? (
                       <Percent size={20} />
@@ -530,11 +604,11 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                         fontSize: '0.75rem',
                         fontWeight: '500',
                         backgroundColor: coupon.status === 'active' 
-                          ? 'var(--coupon-list-status-active-bg, hsl(var(--primary)) / 0.1)'
-                          : 'var(--coupon-list-status-inactive-bg, hsl(var(--secondary)) / 0.1)',
+                          ? 'hsl(var(--primary)) / 0.1'
+                          : 'hsl(var(--secondary)) / 0.1',
                         color: coupon.status === 'active'
-                          ? 'var(--coupon-list-status-active-text, hsl(var(--primary)))'
-                          : 'var(--coupon-list-status-inactive-text, hsl(var(--secondary-foreground)))',
+                          ? 'hsl(var(--primary))'
+                          : 'hsl(var(--secondary-foreground))',
                         textTransform: 'capitalize'
                       }}>
                         {coupon.status || 'N/A'}
@@ -562,7 +636,7 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                     
                     <div style={{ 
                       fontSize: '0.875rem',
-                      color: 'var(--coupon-list-muted, hsl(var(--muted-foreground)))',
+                      color: 'hsl(var(--muted-foreground))',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '1rem'
@@ -593,8 +667,8 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                         style={{
                           padding: '0.5rem',
                           backgroundColor: 'transparent',
-                          color: 'var(--coupon-list-icon-color, hsl(var(--muted-foreground)))',
-                          border: '1px solid var(--coupon-list-icon-border, hsl(var(--border)))',
+                          color: 'hsl(var(--muted-foreground))',
+                          border: '1px solid hsl(var(--border))',
                           borderRadius: '0.5rem',
                           cursor: 'pointer',
                           fontSize: '0.75rem',
@@ -606,16 +680,16 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                           minHeight: '2rem'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = 'var(--coupon-list-icon-hover-bg, hsl(var(--accent)))';
-                          e.currentTarget.style.color = 'var(--coupon-list-icon-hover-color, hsl(var(--accent-foreground)))';
-                          e.currentTarget.style.borderColor = 'var(--coupon-list-icon-hover-border, hsl(var(--accent-foreground)) / 0.2)';
+                          e.currentTarget.style.backgroundColor = 'hsl(var(--accent))';
+                          e.currentTarget.style.color = 'hsl(var(--accent-foreground))';
+                          e.currentTarget.style.borderColor = 'hsl(var(--accent-foreground)) / 0.2';
                           e.currentTarget.style.transform = 'translateY(-1px)';
                           e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--muted)) / 0.15';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.backgroundColor = 'transparent';
-                          e.currentTarget.style.color = 'var(--coupon-list-icon-color, hsl(var(--muted-foreground)))';
-                          e.currentTarget.style.borderColor = 'var(--coupon-list-icon-border, hsl(var(--border)))';
+                          e.currentTarget.style.color = 'hsl(var(--muted-foreground))';
+                          e.currentTarget.style.borderColor = 'hsl(var(--border))';
                           e.currentTarget.style.transform = 'translateY(0)';
                           e.currentTarget.style.boxShadow = 'none';
                         }}
