@@ -97,3 +97,5 @@ export default CouponsFilters;
 };
 
 export default CouponsFilters;
+  )
+}
