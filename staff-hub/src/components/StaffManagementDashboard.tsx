@@ -409,43 +409,43 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
                   </Button>
                 </div>
               )}
-        </div>
+            </div>
 
-        <div className="flex gap-2">
-          <Button 
-            variant="outline"
-            onClick={onRefresh} 
-            className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:text-slate-700 hover:border-slate-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-white/80 backdrop-blur-sm"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-            <div className="relative flex items-center gap-2">
-              <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-300" />
-              Refresh
-            </div>
-          </Button>
-          
-          <Button 
-            variant="outline"
-            onClick={() => setViewMode('bulk')} 
-            className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:text-indigo-700 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-indigo-50/50 backdrop-blur-sm"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-            <div className="relative flex items-center gap-2">
-              <Settings2 size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-              Bulk Manage
-            </div>
-          </Button>
-          
-          <Button 
-            onClick={handleCreateNew} 
-            className="group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-            <div className="relative flex items-center gap-2">
-              <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-              Add Staff
-            </div>
-          </Button>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline"
+                onClick={onRefresh} 
+                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:text-slate-700 hover:border-slate-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-white/80 backdrop-blur-sm"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <div className="relative flex items-center gap-2">
+                  <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-300" />
+                  Refresh
+                </div>
+              </Button>
+              
+              <Button 
+                variant="outline"
+                onClick={() => setViewMode('bulk')} 
+                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:text-indigo-700 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-indigo-50/50 backdrop-blur-sm"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <div className="relative flex items-center gap-2">
+                  <Settings2 size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                  Bulk Manage
+                </div>
+              </Button>
+              
+              <Button 
+                onClick={handleCreateNew} 
+                className="group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <div className="relative flex items-center gap-2">
+                  <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                  Add Staff
+                </div>
+              </Button>
             </div>
           </div>
         </CardContent>
@@ -624,6 +624,9 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
                     )}
                   </div>
                 </div>
+              );
+            })}
+          </div>
         )}
       </Card>
     </div>
