@@ -409,43 +409,43 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
                   </Button>
                 </div>
               )}
-            </div>
+        </div>
 
-            <div className="flex gap-2">
-              <Button 
-                variant="outline"
-                onClick={onRefresh} 
-                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:text-slate-700 hover:border-slate-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-white/80 backdrop-blur-sm"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <div className="relative flex items-center gap-2">
-                  <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-300" />
-                  Refresh
-                </div>
-              </Button>
-              
-              <Button 
-                variant="outline"
-                onClick={() => setViewMode('bulk')} 
-                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:text-indigo-700 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-indigo-50/50 backdrop-blur-sm"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <div className="relative flex items-center gap-2">
-                  <Settings2 size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-                  Bulk Manage
-                </div>
-              </Button>
-              
-              <Button 
-                onClick={handleCreateNew} 
-                className="group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <div className="relative flex items-center gap-2">
-                  <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-                  Add Staff
-                </div>
-              </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline"
+            onClick={onRefresh} 
+            className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:text-slate-700 hover:border-slate-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-white/80 backdrop-blur-sm"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+            <div className="relative flex items-center gap-2">
+              <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-300" />
+              Refresh
+            </div>
+          </Button>
+          
+          <Button 
+            variant="outline"
+            onClick={() => setViewMode('bulk')} 
+            className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:text-indigo-700 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-indigo-50/50 backdrop-blur-sm"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+            <div className="relative flex items-center gap-2">
+              <Settings2 size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+              Bulk Manage
+            </div>
+          </Button>
+          
+          <Button 
+            onClick={handleCreateNew} 
+            className="group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+            <div className="relative flex items-center gap-2">
+              <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+              Add Staff
+            </div>
+          </Button>
             </div>
           </div>
         </CardContent>
@@ -463,166 +463,294 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
 
       {/* Bulk Selection Controls */}
       {viewMode === 'bulk' && (
-        <Card className="bg-blue-50/50 border-blue-200 mb-6">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <h3 className="text-base font-semibold text-blue-800">
-                  Bulk Management Mode
-                </h3>
-                <Button 
-                  size="sm" 
-                  variant="outline"
-                  onClick={handleSelectAll}
-                  className="text-blue-600 border-blue-300 hover:bg-blue-100"
-                >
-                  {selectedForBulk.length === staff.length ? 'Deselect All' : 'Select All'}
-                </Button>
-              </div>
-              
-              <Button 
-                size="sm" 
-                variant="outline" 
-                onClick={() => setViewMode('list')}
-                className="text-slate-600 border-slate-300 hover:bg-slate-100"
-              >
+        <div style={{
+          padding: '1rem',
+          backgroundColor: 'var(--staff-dashboard-bulk-bg, hsl(var(--accent)) / 0.1)',
+          borderRadius: '0.75rem',
+          border: '1px solid var(--staff-dashboard-accent, hsl(var(--accent)))'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h3 className="text-base font-semibold">
+              Bulk Management Mode
+            </h3>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <Button size="sm" onClick={handleSelectAll}>
+                {selectedForBulk.length === staff.length ? 'Deselect All' : 'Select All'}
+              </Button>
+            
+              <Button size="sm" variant="outline" onClick={() => setViewMode('list')}>
                 Exit Bulk Mode
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* Enhanced Staff List */}
       <Card className="overflow-hidden">
         {error ? (
-          <div className="p-12 text-center">
-            <div className="flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mx-auto mb-4">
-              <AlertCircle size={32} className="text-red-500" />
+          <div style={{
+            padding: '3rem',
+            textAlign: 'center'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              width: '80px',
+              height: '80px',
+              backgroundColor: 'rgb(254, 226, 226)', // red-100
+              borderRadius: '50%',
+              margin: '0 auto 1rem auto'
+            }}>
+              <AlertCircle size={32} color="rgb(239, 68, 68)" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+            <h3 style={{ 
+              color: 'var(--staff-dashboard-foreground, hsl(var(--foreground)))',
+              marginBottom: '0.5rem',
+              fontSize: '1.25rem',
+              fontWeight: '600'
+            }}>
               Failed to Load Staff Data
             </h3>
-            <p className="text-sm text-slate-600 mb-6">
+            <p style={{ 
+              color: 'var(--staff-dashboard-muted, hsl(var(--muted-foreground)))',
+              marginBottom: '1.5rem',
+              fontSize: '0.875rem'
+            }}>
               {error}
             </p>
-            <Button
+            <button
               onClick={onRefresh}
-              className="btn-modern-primary"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.75rem 1.5rem',
+                backgroundColor: 'rgb(59, 130, 246)', // blue-500
+                color: 'white',
+                border: 'none',
+                borderRadius: '0.5rem',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s ease-in-out'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgb(37, 99, 235)'; // blue-600
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgb(59, 130, 246)'; // blue-500
+              }}
             >
-              <div className="relative flex items-center gap-2">
-                <RefreshCw size={16} />
-                Try Again
-              </div>
-            </Button>
+              <RefreshCw size={16} />
+              Try Again
+            </button>
           </div>
         ) : staff.length === 0 ? (
-          <div className="p-12 text-center">
-            <div className="flex items-center justify-center w-20 h-20 bg-slate-100 rounded-full mx-auto mb-4">
-              <Search size={32} className="text-slate-400" />
+          <div style={{
+            padding: '3rem',
+            textAlign: 'center',
+            color: 'var(--staff-dashboard-muted, hsl(var(--muted-foreground)))'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              width: '80px',
+              height: '80px',
+              backgroundColor: 'rgb(243, 244, 246)', // gray-100
+              borderRadius: '50%',
+              margin: '0 auto 1rem auto'
+            }}>
+              <Search size={32} color="rgb(107, 114, 128)" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">No staff members found</h3>
-            <p className="text-sm text-slate-600 mb-6">
-              Try adjusting your search criteria or add your first team member.
-            </p>
-            <Button
-              onClick={handleCreateNew}
-              className="btn-modern-primary"
-            >
-              <div className="relative flex items-center gap-2">
-                <Plus size={16} />
-                Add First Staff Member
-              </div>
-            </Button>
+            <h3>No staff members found</h3>
+            <p>Try adjusting your search criteria or add your first team member.</p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div style={{ overflow: 'auto', maxHeight: '600px' }}>
             {staff.map((member, index) => {
               const isSelected = selectedForBulk.includes(member.id);
+              const isEven = index % 2 === 0;
               
               return (
                 <div
                   key={member.id}
-                  className="list-item-modern p-4 cursor-pointer group"
-                  onClick={() => !viewMode.includes('bulk') && handleViewDetail(member)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: 'var(--staff-list-item-padding, 1.25rem)',
+                    backgroundColor: isEven 
+                      ? 'var(--staff-dashboard-row-even, transparent)'
+                      : 'var(--staff-dashboard-row-odd, hsl(var(--muted)) / 0.05)',
+                    borderBottom: index < staff.length - 1 
+                      ? '1px solid var(--staff-dashboard-border, hsl(var(--border)))'
+                      : 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease-in-out',
+                    borderRadius: '0.75rem',
+                    margin: '0.25rem 0'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--staff-dashboard-hover, hsl(var(--accent)) / 0.1)';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px hsl(var(--muted)) / 0.15';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = isEven 
+                      ? 'var(--staff-dashboard-row-even, transparent)'
+                      : 'var(--staff-dashboard-row-odd, hsl(var(--muted)) / 0.05)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
                 >
-                  <div className="flex items-center gap-4">
-                    {/* Bulk selection checkbox */}
-                    {viewMode === 'bulk' && (
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={(e) => handleBulkSelect(member.id, e.target.checked)}
-                        className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    )}
-                    
-                    {/* Avatar */}
-                    <div className="relative">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold shadow-md group-hover:shadow-lg transition-all duration-200 group-hover:scale-105">
-                        {`${member.firstName?.[0] || '?'}${member.lastName?.[0] || '?'}`.toUpperCase()}
-                      </div>
-                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white shadow-sm ${
-                        member.isActive ? 'bg-emerald-500' : 'bg-slate-400'
-                      }`} />
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-slate-900 truncate group-hover:text-slate-800 transition-colors">
-                          {member.firstName || 'Unknown'} {member.lastName || 'User'}
-                        </h3>
-                        
-                        <Badge className={`text-xs font-medium ${
-                          member.role === 'manager' 
-                            ? 'bg-purple-100 text-purple-700 border-purple-200' 
-                            : 'bg-slate-100 text-slate-600 border-slate-200'
-                        }`}>
-                          {member.role || 'N/A'}
-                        </Badge>
-                        
-                        <Badge className={`text-xs font-medium ${
-                          member.isActive
-                            ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
-                            : 'bg-red-100 text-red-700 border-red-200'
-                        }`}>
-                          {member.isActive ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </div>
+                  {/* Bulk selection checkbox */}
+                  {viewMode === 'bulk' && (
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={(e) => handleBulkSelect(member.id, e.target.checked)}
+                      style={{ marginRight: '1rem' }}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  )}
+                  
+                  {/* Avatar */}
+                  <div style={{
+                    width: '3rem',
+                    height: '3rem',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--staff-dashboard-avatar-bg, hsl(var(--primary)))',
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    marginRight: '1rem',
+                    flexShrink: 0
+                  }}>
+                    {`${member.firstName?.[0] || '?'}${member.lastName?.[0] || '?'}`.toUpperCase()}
+                  </div>
+                  
+                  {/* Details */}
+                  <div 
+                    style={{ flex: 1, minWidth: 0 }}
+                    onClick={() => !viewMode.includes('bulk') && handleViewDetail(member)}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                      <h4 style={{ 
+                        margin: 0, 
+                        fontSize: '1rem',
+                        fontWeight: '600',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        {member.firstName || 'Unknown'} {member.lastName || 'User'}
+                      </h4>
                       
-                      <div className="flex items-center gap-4 text-sm text-slate-600">
-                        <span className="flex items-center gap-1">
-                          <Mail size={14} />
-                          {member.email || 'No email'}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Building2 size={14} />
-                          {member.departmentId || 'No Department'}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Briefcase size={14} />
-                          {member.employmentType?.replace('_', ' ') || 'N/A'}
-                        </span>
-                      </div>
+                      <span style={{
+                        padding: '0.125rem 0.5rem',
+                        borderRadius: '9999px',
+                        fontSize: '0.75rem',
+                        fontWeight: '500',
+                        backgroundColor: member.role === 'manager' 
+                          ? 'var(--staff-dashboard-manager-bg, hsl(var(--primary)) / 0.1)'
+                          : 'var(--staff-dashboard-employee-bg, hsl(var(--secondary)) / 0.1)',
+                        color: member.role === 'manager'
+                          ? 'var(--staff-dashboard-manager-text, hsl(var(--primary)))'
+                          : 'var(--staff-dashboard-employee-text, hsl(var(--secondary-foreground)))',
+                        textTransform: 'capitalize'
+                      }}>
+                        {member.role || 'N/A'}
+                      </span>
+                      
+                      <span style={{
+                        padding: '0.125rem 0.5rem',
+                        borderRadius: '9999px',
+                        fontSize: '0.75rem',
+                        fontWeight: '500',
+                        border: '1.5px solid',
+                        borderColor: member.isActive 
+                          ? '#16a34a'
+                          : '#6b7280',
+                        backgroundColor: member.isActive 
+                          ? '#dcfce7'
+                          : '#f3f4f6',
+                        color: member.isActive
+                          ? '#166534'
+                          : '#374151'
+                      }}>
+                        {member.isActive ? 'Active' : 'Inactive'}
+                      </span>
                     </div>
                     
-                    {/* Action Button */}
-                    {viewMode !== 'bulk' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+                    <div style={{ 
+                      fontSize: '0.875rem',
+                      color: 'var(--staff-dashboard-muted, hsl(var(--muted-foreground)))',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem'
+                    }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                        <Mail size={14} color="rgb(107, 114, 128)" />
+                        {member.email || 'No email'}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                        <Building2 size={14} color="rgb(107, 114, 128)" />
+                        {member.departmentId || 'No Department'}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                        <Briefcase size={14} color="rgb(107, 114, 128)" />
+                        {member.employmentType?.replace('_', ' ') || 'N/A'}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Quick actions */}
+                  {viewMode !== 'bulk' && (
+                    <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem' }}>
+                      <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleViewDetail(member);
                         }}
+                        style={{
+                          padding: '0.5rem',
+                          backgroundColor: 'transparent',
+                          color: 'var(--staff-dashboard-icon-color, hsl(var(--muted-foreground)))',
+                          border: '1px solid var(--staff-dashboard-icon-border, hsl(var(--border)))',
+                          borderRadius: '0.5rem',
+                          cursor: 'pointer',
+                          fontSize: '0.75rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'all 0.2s ease-in-out',
+                          minWidth: '2rem',
+                          minHeight: '2rem'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = 'var(--staff-dashboard-icon-hover-bg, hsl(var(--accent)))';
+                          e.currentTarget.style.color = 'var(--staff-dashboard-icon-hover-color, hsl(var(--accent-foreground)))';
+                          e.currentTarget.style.borderColor = 'var(--staff-dashboard-icon-hover-border, hsl(var(--accent-foreground)) / 0.2)';
+                          e.currentTarget.style.transform = 'translateY(-1px)';
+                          e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--muted)) / 0.15';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = 'var(--staff-dashboard-icon-color, hsl(var(--muted-foreground)))';
+                          e.currentTarget.style.borderColor = 'var(--staff-dashboard-icon-border, hsl(var(--border)))';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
                       >
                         <Eye size={16} />
-                      </Button>
-                    )}
-                  </div>
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}
