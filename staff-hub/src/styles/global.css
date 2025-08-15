@@ -61,65 +61,38 @@
 
 /* Enhanced button styles */
 @layer components {
-  /* Modern Button Animations */
-  .modern-button-primary {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
-    border: none;
-    border-radius: 0.5rem;
-    color: white;
-    font-weight: 600;
-    font-size: 0.875rem;
-    padding: 0.625rem 1.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+  /* Enhanced Button Styles for shadcn/ui */
+  .btn-modern-primary {
+    @apply relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800;
+    @apply hover:from-blue-700 hover:via-blue-800 hover:to-blue-900;
+    @apply shadow-lg hover:shadow-xl hover:-translate-y-0.5;
+    @apply transition-all duration-200;
   }
   
-  .modern-button-primary:hover {
-    background: linear-gradient(135deg, #1d4ed8, #1e40af, #1e3a8a);
-    transform: translateY(-2px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  .btn-modern-outline {
+    @apply relative overflow-hidden border-slate-200 bg-white/80 backdrop-blur-sm;
+    @apply hover:bg-slate-50 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5;
+    @apply transition-all duration-200;
   }
   
-  .modern-button-outline {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #e2e8f0;
-    border-radius: 0.5rem;
-    color: #475569;
-    font-weight: 500;
-    font-size: 0.875rem;
-    padding: 0.625rem 1rem;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    backdrop-filter: blur(8px);
+  .btn-modern-accent {
+    @apply relative overflow-hidden border-indigo-200 bg-indigo-50/50 text-indigo-600 backdrop-blur-sm;
+    @apply hover:bg-indigo-100 hover:border-indigo-300 hover:text-indigo-700 hover:shadow-md hover:-translate-y-0.5;
+    @apply transition-all duration-200;
   }
   
-  .modern-button-outline:hover {
-    color: #334155;
-    border-color: #cbd5e1;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* Icon Animations */
+  .icon-rotate-180:hover {
+    @apply rotate-180;
   }
   
-  .modern-button-accent {
-    background: rgba(238, 242, 255, 0.5);
-    border: 1px solid #c7d2fe;
-    border-radius: 0.5rem;
-    color: #4f46e5;
-    font-weight: 500;
-    font-size: 0.875rem;
-    padding: 0.625rem 1rem;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    backdrop-filter: blur(8px);
+  .icon-rotate-90:hover {
+    @apply rotate-90;
   }
   
-  .modern-button-accent:hover {
-    color: #4338ca;
-    border-color: #a5b4fc;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* Shimmer Effect */
+  .btn-shimmer::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200;
   }
 }

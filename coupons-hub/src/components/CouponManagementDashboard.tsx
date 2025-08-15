@@ -378,59 +378,32 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
 
             {/* Right side: actions */}
             <div className="flex items-center gap-2">
-              {/* Refresh Button */}
-              <button
+              <Button
+                variant="outline"
                 onClick={onRefresh || (() => {})}
-                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:text-slate-700 hover:border-slate-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-white/80 backdrop-blur-sm"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(to right, #f8fafc, #f1f5f9)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)';
-                }}
+                className="group relative overflow-hidden border-slate-200 bg-white/80 backdrop-blur-sm hover:bg-slate-50 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div className="relative flex items-center gap-2">
-                  <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-300" />
-                  Refresh
-                </div>
-              </button>
+                <RefreshCw size={16} className="mr-2 group-hover:rotate-180 transition-transform duration-300" />
+                Refresh
+              </Button>
               
-              {/* Bulk Manage Button */}
-              <button
+              <Button
+                variant="outline"
                 onClick={() => setViewMode('bulk')}
-                className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-emerald-600 border border-emerald-200 rounded-lg hover:text-emerald-700 hover:border-emerald-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-emerald-50/50 backdrop-blur-sm"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(to right, #ecfdf5, #d1fae5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(236, 253, 245, 0.5)';
-                }}
+                className="group relative overflow-hidden border-emerald-200 bg-emerald-50/50 text-emerald-600 backdrop-blur-sm hover:bg-emerald-100 hover:border-emerald-300 hover:text-emerald-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div className="relative flex items-center gap-2">
-                  <Settings2 size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-                  Bulk Manage
-                </div>
-              </button>
+                <Settings2 size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+                Bulk Manage
+              </Button>
               
-              {/* Add Coupon Button - Primary */}
-              <button
+              <Button
                 onClick={handleCreateNew}
-                className="group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
-                }}
+                className="group relative overflow-hidden bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 px-6"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <div className="relative flex items-center gap-2">
-                  <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-                  Add Coupon
-                </div>
-              </button>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                <Plus size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+                <span className="relative font-semibold">Add Coupon</span>
+              </Button>
             </div>
           </div>
         </CardContent>
