@@ -377,32 +377,38 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
             </div>
 
             {/* Right side: actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              {/* Refresh Button */}
               <Button
                 variant="outline"
+                size="default"
                 onClick={onRefresh || (() => {})}
-                className="group relative overflow-hidden border-slate-200 bg-white/80 backdrop-blur-sm hover:bg-slate-50 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                className="btn-modern-outline group"
               >
                 <RefreshCw size={16} className="mr-2 group-hover:rotate-180 transition-transform duration-300" />
                 Refresh
               </Button>
               
+              {/* Bulk Manage Button */}
               <Button
                 variant="outline"
+                size="default"
                 onClick={() => setViewMode('bulk')}
-                className="group relative overflow-hidden border-emerald-200 bg-emerald-50/50 text-emerald-600 backdrop-blur-sm hover:bg-emerald-100 hover:border-emerald-300 hover:text-emerald-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                className="btn-modern-accent-emerald group"
               >
                 <Settings2 size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
                 Bulk Manage
               </Button>
               
+              {/* Add Coupon Button */}
               <Button
+                size="default"
                 onClick={handleCreateNew}
-                className="group relative overflow-hidden bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 px-6"
+                className="btn-modern-primary-emerald group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                <Plus size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
-                <span className="relative font-semibold">Add Coupon</span>
+                <Plus size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300 relative z-10" />
+                <span className="relative z-10 font-semibold">Add Coupon</span>
               </Button>
             </div>
           </div>

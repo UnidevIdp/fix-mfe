@@ -446,32 +446,38 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
       {/* Search and Filters */}
       <StaffFilters
         onSearch={onSearch}
-        onFilterChange={onFilterChange}
-        loading={loading}
-        searchResultsCount={staff.length}
-        totalStaffCount={analytics.total}
-        currentSearchQuery={searchQuery}
-      />
-
-      {/* Bulk Selection Controls */}
-      {viewMode === 'bulk' && (
-        <div style={{
-          padding: '1rem',
-          backgroundColor: 'var(--staff-dashboard-bulk-bg, hsl(var(--accent)) / 0.1)',
-          borderRadius: '0.75rem',
-          border: '1px solid var(--staff-dashboard-accent, hsl(var(--accent)))'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h3 className="text-base font-semibold">
-              Bulk Management Mode
-            </h3>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <Button size="sm" onClick={handleSelectAll}>
-                {selectedForBulk.length === staff.length ? 'Deselect All' : 'Select All'}
+            <div className="flex items-center gap-3">
+              {/* Refresh Button */}
+              <Button
+                variant="outline"
+                size="default"
+                onClick={onRefresh}
+                className="btn-modern-outline group"
+              >
+                <RefreshCw size={16} className="mr-2 group-hover:rotate-180 transition-transform duration-300" />
+                Refresh
               </Button>
-            
-              <Button size="sm" variant="outline" onClick={() => setViewMode('list')}>
-                Exit Bulk Mode
+              
+              {/* Bulk Manage Button */}
+              <Button
+                variant="outline"
+                size="default"
+                onClick={() => setViewMode('bulk')}
+                className="btn-modern-accent group"
+              >
+                <Settings2 size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+                Bulk Manage
+              </Button>
+              
+              {/* Add Staff Button */}
+              <Button
+                size="default"
+                onClick={handleCreateNew}
+                className="btn-modern-primary group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                <Plus size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300 relative z-10" />
+                <span className="relative z-10 font-semibold">Add Staff</span>
               </Button>
             </div>
           </div>

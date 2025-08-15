@@ -61,38 +61,63 @@
 
 /* Enhanced button styles */
 @layer components {
-  /* Enhanced Button Styles for shadcn/ui */
+  /* Modern Button System */
   .btn-modern-primary {
-    @apply relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800;
+    @apply relative overflow-hidden;
+    @apply bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800;
     @apply hover:from-blue-700 hover:via-blue-800 hover:to-blue-900;
-    @apply shadow-lg hover:shadow-xl hover:-translate-y-0.5;
+    @apply text-white font-semibold;
+    @apply shadow-lg hover:shadow-xl;
+    @apply hover:-translate-y-0.5;
     @apply transition-all duration-200;
+    @apply border-0;
+    @apply px-6 py-2.5;
+    @apply rounded-lg;
   }
   
   .btn-modern-outline {
-    @apply relative overflow-hidden border-slate-200 bg-white/80 backdrop-blur-sm;
-    @apply hover:bg-slate-50 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5;
+    @apply relative overflow-hidden;
+    @apply border border-slate-200 bg-white/80 backdrop-blur-sm;
+    @apply text-slate-700 font-medium;
+    @apply hover:bg-slate-50 hover:border-slate-300;
+    @apply hover:shadow-md hover:-translate-y-0.5;
     @apply transition-all duration-200;
+    @apply px-4 py-2.5;
+    @apply rounded-lg;
   }
   
   .btn-modern-accent {
-    @apply relative overflow-hidden border-indigo-200 bg-indigo-50/50 text-indigo-600 backdrop-blur-sm;
-    @apply hover:bg-indigo-100 hover:border-indigo-300 hover:text-indigo-700 hover:shadow-md hover:-translate-y-0.5;
+    @apply relative overflow-hidden;
+    @apply border border-indigo-200 bg-indigo-50/50;
+    @apply text-indigo-600 font-medium backdrop-blur-sm;
+    @apply hover:bg-indigo-100 hover:border-indigo-300 hover:text-indigo-700;
+    @apply hover:shadow-md hover:-translate-y-0.5;
     @apply transition-all duration-200;
+    @apply px-4 py-2.5;
+    @apply rounded-lg;
   }
   
-  /* Icon Animations */
-  .icon-rotate-180:hover {
-    @apply rotate-180;
+  /* Card Enhancements */
+  .analytics-card-modern {
+    @apply bg-white border border-slate-200/60;
+    @apply hover:border-slate-300 hover:shadow-lg;
+    @apply hover:-translate-y-1;
+    @apply transition-all duration-200;
+    @apply rounded-xl;
   }
   
-  .icon-rotate-90:hover {
-    @apply rotate-90;
+  .card-modern {
+    @apply bg-white border border-slate-200/60;
+    @apply hover:border-slate-300 hover:shadow-md;
+    @apply transition-all duration-200;
+    @apply rounded-xl;
   }
   
-  /* Shimmer Effect */
-  .btn-shimmer::after {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200;
+  .list-item-modern {
+    @apply bg-white border border-slate-200/40;
+    @apply hover:border-slate-300 hover:shadow-md;
+    @apply hover:-translate-y-0.5;
+    @apply transition-all duration-200;
+    @apply rounded-lg;
   }
 }
