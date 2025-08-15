@@ -340,11 +340,11 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
       </div>
 
       {/* Action Bar */}
-      <Card className="hover:shadow-md transition-shadow duration-200">
+      <Card>
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h2 className="text-xl font-semibold">Coupon Directory</h2>
+              <h2 className="text-xl font-semibold text-foreground">Coupon Directory</h2>
               
               {selectedForBulk.length > 0 && (
                 <div className="flex items-center gap-2">
@@ -375,12 +375,12 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
               )}
             </div>
 
-            <div className="flex gap-2">
+                className="gap-2 hover:bg-accent/50 transition-all duration-200 border-border/50 hover:border-border"
               <Button variant="outline" onClick={onRefresh || (() => {})} className="gap-2 hover:bg-accent transition-colors">
-                <RefreshCw size={16} />
-                Refresh
+                variant="outline"
+                variant="secondary"
               </Button>
-              
+                className="gap-2 hover:bg-secondary/80 transition-all duration-200"
               <Button variant="secondary" onClick={() => setViewMode('bulk')} className="gap-2 hover:bg-secondary/80 transition-colors">
                 <Settings2 size={16} />
                 Bulk Manage
@@ -388,7 +388,7 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
               
               <Button onClick={handleCreateNew} className="gap-2 px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
                 <Plus size={16} />
-                Add Coupon
+                className="gap-2 px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
               </Button>
             </div>
           </div>
@@ -523,7 +523,7 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '1rem',
+                    padding: 'var(--coupon-list-item-padding, 1.25rem)',
                     backgroundColor: isEven 
                       ? 'transparent'
                       : 'hsl(var(--muted)) / 0.05',
@@ -531,12 +531,16 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                       ? '1px solid hsl(var(--border))'
                       : 'none',
                     cursor: 'pointer',
-                    transition: 'all 0.2s ease-in-out'
+                    transition: 'all 0.2s ease-in-out',
+                    borderRadius: '0.75rem',
+                    margin: '0.25rem 0',
+                    border: '1px solid transparent'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = 'hsl(var(--accent)) / 0.1';
                     e.currentTarget.style.transform = 'translateY(-1px)';
                     e.currentTarget.style.boxShadow = '0 4px 12px hsl(var(--muted)) / 0.15';
+                    e.currentTarget.style.borderColor = 'hsl(var(--border))';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = isEven 
@@ -544,6 +548,7 @@ export const CouponManagementDashboard: React.FC<CouponManagementDashboardProps>
                       : 'hsl(var(--muted)) / 0.05';
                     e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.borderColor = 'transparent';
                   }}
                 >
                   {/* Bulk selection checkbox */}

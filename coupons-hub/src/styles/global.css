@@ -60,3 +60,27 @@
     color: hsl(var(--foreground));
   }
 }
+
+/* Enhanced button styles */
+@layer components {
+  .btn-primary-gradient {
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800;
+    @apply shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+    @apply transition-all duration-200 rounded-xl;
+  }
+  
+  .btn-outline-enhanced {
+    @apply border-border/50 hover:border-border hover:bg-accent/50;
+    @apply transition-all duration-200;
+  }
+  
+  .card-hover-enhanced {
+    @apply hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200;
+  }
+  
+  .list-item-enhanced {
+    @apply rounded-xl border border-transparent hover:border-border;
+    @apply hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
+    @apply bg-card/50 hover:bg-card;
+  }
+}

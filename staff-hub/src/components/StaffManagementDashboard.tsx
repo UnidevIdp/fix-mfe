@@ -302,9 +302,9 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
             {index === breadcrumbs.length - 1 ? (
               <span className="text-foreground font-medium">{crumb.label}</span>
             ) : (
-              <button
+                variant="outline"
                 onClick={() => navigate(crumb.href)}
-                className="hover:text-foreground transition-colors"
+                className="gap-2 hover:bg-accent/50 transition-all duration-200 border-border/50 hover:border-border"
               >
                 {crumb.label}
               </button>
@@ -378,7 +378,7 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h2 className="text-xl font-semibold">Staff Directory</h2>
+              <h2 className="text-xl font-semibold text-foreground">Staff Directory</h2>
               
               {selectedForBulk.length > 0 && (
                 <div className="flex items-center gap-2">
@@ -449,9 +449,9 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
           border: '1px solid var(--staff-dashboard-accent, hsl(var(--accent)))'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                variant="secondary"
               <h3 className="text-base font-semibold">
-                Bulk Management Mode
+                className="gap-2 hover:bg-secondary/80 transition-all duration-200"
               </h3>
               <Button size="sm" onClick={handleSelectAll}>
                 {selectedForBulk.length === staff.length ? 'Deselect All' : 'Select All'}
@@ -555,11 +555,11 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
               
               return (
                 <div
-                  key={member.id}
+                className="gap-2 px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '1rem',
+                    padding: 'var(--staff-list-item-padding, 1.25rem)',
                     backgroundColor: isEven 
                       ? 'var(--staff-dashboard-row-even, transparent)'
                       : 'var(--staff-dashboard-row-odd, hsl(var(--muted)) / 0.05)',
@@ -567,15 +567,21 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
                       ? '1px solid var(--staff-dashboard-border, hsl(var(--border)))'
                       : 'none',
                     cursor: 'pointer',
-                    transition: 'background-color 0.2s ease'
+                    transition: 'all 0.2s ease-in-out',
+                    borderRadius: '0.75rem',
+                    margin: '0.25rem 0'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = 'var(--staff-dashboard-hover, hsl(var(--accent)) / 0.1)';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px hsl(var(--muted)) / 0.15';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = isEven 
                       ? 'var(--staff-dashboard-row-even, transparent)'
                       : 'var(--staff-dashboard-row-odd, hsl(var(--muted)) / 0.05)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   {/* Bulk selection checkbox */}
