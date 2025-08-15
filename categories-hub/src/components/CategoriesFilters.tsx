@@ -102,3 +102,5 @@ export const CategoriesFilters: React.FC<CategoriesFiltersProps> = ({
 };
 
 export default CategoriesFilters;
+  )
+}
