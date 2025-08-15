@@ -1,0 +1,237 @@
+
+> @common/coupons-hub@0.1.0 dev /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub
+> rspack serve --mode development
+
+🔧 COUPONS-HUB RSPACK CONFIG - MODULE FEDERATION
+Environment: DEVELOPMENT
+Port: 3030
+<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:3030/, http://[::1]:3030/
+<i> [webpack-dev-server] On Your Network (IPv4): http://192.168.1.110:3030/
+<i> [webpack-dev-server] On Your Network (IPv6): http://[fd3e:8345:d1ff:5a40:10d2:db62:9b8f:522f]:3030/
+<i> [webpack-dev-server] Content not from webpack is served from '/Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/public' directory
+<i> [webpack-dev-server] 404s will fallback to '/index.html'
+Error: Cannot apply unknown utility class `bg-gray-200`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    at onInvalidCandidate (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tailwindcss@4.1.11/node_modules/tailwindcss/dist/lib.js:18:1312)
+    at ge (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tailwindcss@4.1.11/node_modules/tailwindcss/dist/lib.js:13:29803)
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tailwindcss@4.1.11/node_modules/tailwindcss/dist/lib.js:18:373
+    at I (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tailwindcss@4.1.11/node_modules/tailwindcss/dist/lib.js:3:1656)
+    at je (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tailwindcss@4.1.11/node_modules/tailwindcss/dist/lib.js:18:172)
+    at bi (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tailwindcss@4.1.11/node_modules/tailwindcss/dist/lib.js:35:780)
+    at async yi (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tailwindcss@4.1.11/node_modules/tailwindcss/dist/lib.js:35:1123)
+    at async _r (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@tailwindcss+node@4.1.11/node_modules/@tailwindcss/node/dist/index.js:10:3384)
+    at async p (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@tailwindcss+postcss@4.1.11/node_modules/@tailwindcss/postcss/dist/index.js:10:4019)
+    at async Object.Once (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@tailwindcss+postcss@4.1.11/node_modules/@tailwindcss/postcss/dist/index.js:10:4290)
+Error: Can't resolve '../../../packages/ui/src/styles/globals.css' in '/Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/src/styles'
+    at finishWithoutResolve (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/enhanced-resolve@5.18.2/node_modules/enhanced-resolve/lib/Resolver.js:567:18)
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/enhanced-resolve@5.18.2/node_modules/enhanced-resolve/lib/Resolver.js:659:14
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/enhanced-resolve@5.18.2/node_modules/enhanced-resolve/lib/Resolver.js:720:5
+    at eval (eval at create (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tapable@2.2.2/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:15:1)
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/enhanced-resolve@5.18.2/node_modules/enhanced-resolve/lib/Resolver.js:720:5
+    at eval (eval at create (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tapable@2.2.2/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:27:1)
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/enhanced-resolve@5.18.2/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:89:43
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/enhanced-resolve@5.18.2/node_modules/enhanced-resolve/lib/Resolver.js:720:5
+    at eval (eval at create (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/tapable@2.2.2/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:15:1)
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/enhanced-resolve@5.18.2/node_modules/enhanced-resolve/lib/Resolver.js:720:5 {
+  details: "resolve '../../../packages/ui/src/styles/globals.css' in '/Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/src/styles'\n" +
+    '  using description file: /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/package.json (relative path: ./src/styles)\n' +
+    '    using description file: /Users/Mahesh.Sangawar/personal/tesseract-hub/package.json (relative path: ./domains/common/mfes/packages/ui/src/styles/globals.css)\n' +
+    '      no extension\n' +
+    "        /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/packages/ui/src/styles/globals.css doesn't exist\n" +
+    '      .css\n' +
+    "        /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/packages/ui/src/styles/globals.css.css doesn't exist\n" +
+    '      as directory\n' +
+    "        /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/packages/ui/src/styles/globals.css doesn't exist"
+}
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 618 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.af67e03e672cec012b077c6155f2a403.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 102 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.462b3f4c06e70953bed74541f7cf99fc.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 86 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.13efaca86d28e8c18892ebd803636a22.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 309 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.cc9dea6823da32549186b94d0e317206.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 153 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.979a73e8bd26873c33837e063afb04f0.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 163 ms
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 228 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.688e093b086635e4922d0eae96a846f6.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.b1b07c659cd5aa660a5e6f6f3a1bb9c0.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 166 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.a9a819daab77344551737f1823399246.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 123 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.c18669be06af7b2303e736df1a1c65de.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 150 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.cd39aa7225eb647858907bfe5d942d48.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+ERROR in ./src/components/forms/ComprehensiveCouponForm.tsx
+  × Module build failed:
+  ├─▶   ×   x Unterminated regexp literal
+  │     │      ,-[/Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/src/components/forms/ComprehensiveCouponForm.tsx:854:1]
+  │     │  851 |           </div>
+  │     │  852 |         </div>
+  │     │  853 |       </div>
+  │     │  854 |     </div>
+  │     │      :      ^^^^^
+  │     │  855 |   );
+  │     │  856 | }
+  │     │      `----
+  │     │
+  │   
+  ╰─▶ Syntax Error
+
+Rspack compiled with 1 error in 187 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.763f6e540203388dc6c5775726eb98af.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 140 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.16094ad887f42f989808cb81a3921932.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 126 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.953303c5e6cc28a3285d6a8e0c6cdd86.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 127 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.6b3d8ebd1866b2dc73b4bcaea2e511ce.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 115 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.532759a8a0b2537c9ab0f50aae8a44ec.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 118 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.35c800c4b7cd81bfa3467ac3303a83c3.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 139 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.c8e0975102bfd8bf33a157a1979c3a4b.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 130 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.f58b093dd09cff3b929682ae822465f0.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 173 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.a6e33cdc2d6c0d8aceaa8248b142e5dd.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:73:29)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 135 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.353e50bc698b9a6665934aea6216bc52.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 130 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.65377670c644bef229aeac72480e6f91.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)
+[ Module Federation Manifest Plugin ] Manifest Link: http://localhost:3030/mf-manifest.json 
+Rspack compiled successfully in 122 ms
+[ Module Federation DTS ] Error: Failed to generate type declaration. Execute the below cmd to reproduce and fix the error. #TYPE-001
+args: {"cmd":"npx tsc --project /Users/Mahesh.Sangawar/personal/tesseract-hub/domains/common/mfes/coupons-hub/node_modules/.federation/tsconfig.9353a424c92436d5d7664b2c613c31a0.json"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/type/TYPE-001
+    at /Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:401:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/Mahesh.Sangawar/personal/tesseract-hub/node_modules/.pnpm/@module-federation+dts-plugin@0.15.0_typescript@5.8.3/node_modules/@module-federation/dts-plugin/dist/fork-generate-dts.js:66:24)

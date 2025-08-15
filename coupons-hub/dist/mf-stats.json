@@ -1,0 +1,439 @@
+{
+  "id": "couponsHub",
+  "name": "couponsHub",
+  "metaData": {
+    "name": "couponsHub",
+    "type": "app",
+    "buildInfo": {
+      "buildVersion": "0.1.0",
+      "buildName": "@common/coupons-hub"
+    },
+    "remoteEntry": {
+      "name": "remoteEntry.js",
+      "path": "",
+      "type": "global"
+    },
+    "types": {
+      "path": "",
+      "name": "",
+      "zip": "",
+      "api": ""
+    },
+    "globalName": "couponsHub",
+    "pluginVersion": "0.15.0",
+    "prefetchInterface": false,
+    "publicPath": "https://coupons-hub.tesseract-hub.com/"
+  },
+  "shared": [
+    {
+      "singleton": true,
+      "requiredVersion": "workspace:*",
+      "shareScope": "default",
+      "eager": true,
+      "import": "/Users/samyakrout/Desktop/samyak-work/projects/final-project/tesseract-hub/packages/shared/src/index.ts",
+      "name": "@workspace/shared",
+      "version": "0",
+      "id": "couponsHub:@workspace/shared",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      },
+      "usedIn": [
+        "./CouponFilters"
+      ]
+    },
+    {
+      "singleton": true,
+      "requiredVersion": "workspace:*",
+      "shareScope": "default",
+      "eager": true,
+      "import": "/Users/samyakrout/Desktop/samyak-work/projects/final-project/tesseract-hub/packages/ui/src/index.ts",
+      "name": "@workspace/ui",
+      "version": "0",
+      "id": "couponsHub:@workspace/ui",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      },
+      "usedIn": [
+        "./CouponManagementDashboard"
+      ]
+    },
+    {
+      "singleton": true,
+      "requiredVersion": "^19.1.0",
+      "shareScope": "default",
+      "eager": true,
+      "name": "react-dom",
+      "version": "19.1.1",
+      "id": "couponsHub:react-dom",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      },
+      "usedIn": []
+    },
+    {
+      "singleton": true,
+      "requiredVersion": "^7.6.3",
+      "shareScope": "default",
+      "name": "react-router-dom",
+      "version": "7.8.0",
+      "eager": false,
+      "id": "couponsHub:react-router-dom",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "255.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      },
+      "usedIn": [
+        "./CouponsHub"
+      ]
+    },
+    {
+      "singleton": true,
+      "requiredVersion": "^19.1.0",
+      "shareScope": "default",
+      "eager": true,
+      "name": "react",
+      "version": "19.1.1",
+      "id": "couponsHub:react",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      },
+      "usedIn": [
+        "./CouponStatistics",
+        "./CouponDetails",
+        "./CouponFilters",
+        "./CouponForm",
+        "./components",
+        "./CouponCampaignList",
+        "./CouponsList"
+      ]
+    }
+  ],
+  "remotes": [],
+  "exposes": [
+    {
+      "path": "./CouponsHub",
+      "id": "couponsHub:CouponsHub",
+      "name": "CouponsHub",
+      "requires": [
+        "react-router-dom"
+      ],
+      "file": "src/App",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_couponsApi.js",
+            "__federation_expose_useCoupons.js",
+            "515.js",
+            "__federation_expose_CouponsHub.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./CouponsList",
+      "id": "couponsHub:CouponsList",
+      "name": "CouponsList",
+      "requires": [
+        "react"
+      ],
+      "file": "src/components/lists/CouponsList",
+      "assets": {
+        "js": {
+          "sync": [
+            "688.js",
+            "701.js",
+            "__federation_expose_CouponsList.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./CouponForm",
+      "id": "couponsHub:CouponForm",
+      "name": "CouponForm",
+      "requires": [
+        "react"
+      ],
+      "file": "src/components/forms/CouponForm",
+      "assets": {
+        "js": {
+          "sync": [
+            "105.js",
+            "483.js",
+            "__federation_expose_CouponForm.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./CouponDetails",
+      "id": "couponsHub:CouponDetails",
+      "name": "CouponDetails",
+      "requires": [
+        "react"
+      ],
+      "file": "src/components/CouponDetails",
+      "assets": {
+        "js": {
+          "sync": [
+            "688.js",
+            "__federation_expose_couponsApi.js",
+            "__federation_expose_useCoupons.js",
+            "585.js",
+            "__federation_expose_CouponDetails.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./CouponFilters",
+      "id": "couponsHub:CouponFilters",
+      "name": "CouponFilters",
+      "requires": [
+        "react",
+        "@workspace/shared"
+      ],
+      "file": "src/components/CouponsFilters",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_CouponFilters.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./CouponCampaignList",
+      "id": "couponsHub:CouponCampaignList",
+      "name": "CouponCampaignList",
+      "requires": [
+        "react"
+      ],
+      "file": "src/components/lists/CouponCampaignList",
+      "assets": {
+        "js": {
+          "sync": [
+            "688.js",
+            "__federation_expose_couponsApi.js",
+            "__federation_expose_useCoupons.js",
+            "__federation_expose_CouponCampaignList.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./CouponManagementDashboard",
+      "id": "couponsHub:CouponManagementDashboard",
+      "name": "CouponManagementDashboard",
+      "requires": [
+        "@workspace/ui"
+      ],
+      "file": "src/components/CouponManagementDashboard",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_couponsApi.js",
+            "__federation_expose_useCoupons.js",
+            "515.js",
+            "__federation_expose_CouponManagementDashboard.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./CouponStatistics",
+      "id": "couponsHub:CouponStatistics",
+      "name": "CouponStatistics",
+      "requires": [
+        "react"
+      ],
+      "file": "src/components/CouponStatistics",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_CouponStatistics.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./components",
+      "id": "couponsHub:components",
+      "name": "components",
+      "requires": [
+        "react"
+      ],
+      "file": "src/components/index",
+      "assets": {
+        "js": {
+          "sync": [
+            "688.js",
+            "105.js",
+            "__federation_expose_couponsApi.js",
+            "__federation_expose_useCoupons.js",
+            "515.js",
+            "585.js",
+            "483.js",
+            "701.js",
+            "__federation_expose_components.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./useCoupons",
+      "id": "couponsHub:useCoupons",
+      "name": "useCoupons",
+      "requires": [],
+      "file": "src/hooks/useCoupons",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_couponsApi.js",
+            "__federation_expose_useCoupons.js",
+            "515.js",
+            "__federation_expose_CouponsHub.js",
+            "688.js",
+            "585.js",
+            "__federation_expose_CouponDetails.js",
+            "__federation_expose_CouponCampaignList.js",
+            "__federation_expose_CouponManagementDashboard.js",
+            "105.js",
+            "483.js",
+            "701.js",
+            "__federation_expose_components.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "path": "./couponsApi",
+      "id": "couponsHub:couponsApi",
+      "name": "couponsApi",
+      "requires": [],
+      "file": "src/services/couponsApi",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_couponsApi.js",
+            "__federation_expose_useCoupons.js",
+            "515.js",
+            "__federation_expose_CouponsHub.js",
+            "688.js",
+            "585.js",
+            "__federation_expose_CouponDetails.js",
+            "__federation_expose_CouponCampaignList.js",
+            "__federation_expose_CouponManagementDashboard.js",
+            "105.js",
+            "483.js",
+            "701.js",
+            "__federation_expose_components.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    }
+  ]
+}
