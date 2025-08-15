@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Product } from '../services/productsApi';
 import { ProductDetails } from './details/ProductDetails';
 import { ProductsForm } from './forms/ProductsForm';
+import { uploadProductDocuments } from '../services/productsApi';
 import { 
   Package, 
   CheckCircle, 
@@ -18,23 +19,28 @@ import {
   Activity,
   Mail,
   Building2,
-  Briefcase
+  Briefcase,
+  ArrowLeft
 } from 'lucide-react';
+import { Button } from '@workspace/ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@workspace/ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui';
 import { useMfeRouter } from '@workspace/shared';
 import { ProductRoutes, getBreadcrumbs } from '../utils/routing';
-import { Button } from '@workspace/ui';
-import { Card, CardContent } from '@workspace/ui';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui';
 import { ProductsFilters } from './ProductsFilters';
 
-// Main Component Props
 interface ProductsManagementDashboardProps {
+  // Product data
   products: Product[];
   selectedProduct: Product | null;
   loading: boolean;
   error: string | null;
+  
+  // Search and filtering
   searchQuery: string;
   filters: any;
+  
+  // Actions
   onProductSelect: (product: Product) => void;
   onProductCreate: (data: any) => Promise<Product | null>;
   onProductUpdate: (id: string, data: any) => Promise<Product | null>;
@@ -42,6 +48,8 @@ interface ProductsManagementDashboardProps {
   onSearch: (query: string) => void;
   onFilterChange: (filters: any) => void;
   onRefresh: () => void;
+  
+  // UI state
   className?: string;
   initialViewMode?: string;
   onViewModeChange?: (mode: string) => void;
@@ -70,62 +78,76 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
   const { navigate, location, hasRouter } = useMfeRouter('products-hub');
   const [internalViewMode, setInternalViewMode] = useState<ViewMode>('list');
   const [productId, setProductId] = useState<string | null>(null);
-  const [selectedForBulk, setSelectedForBulk] = useState<string[]>([]);
-  const [bulkAction, setBulkAction] = useState<'none' | 'delete' | 'activate' | 'deactivate'>('none');
   
-  // URL-based route detection
+  // URL-based route detection and view mode initialization
   useEffect(() => {
-    if (initialViewMode) return;
+    // Skip URL detection if initialViewMode is explicitly provided
+    if (initialViewMode) {
+      console.log('[ProductsDashboard] Using initialViewMode:', initialViewMode);
+      return;
+    }
     
     const currentPath = location.pathname;
+    console.log('[ProductsDashboard] URL changed:', currentPath);
     
+    // Parse URL to determine view mode and ID
     if (currentPath.includes('/create')) {
+      console.log('[ProductsDashboard] Setting mode to create');
       setInternalViewMode('create');
       setProductId(null);
     } else if (currentPath.includes('/edit')) {
+      console.log('[ProductsDashboard] Setting mode to detail (edit mode)');
       const match = currentPath.match(/\/products\/([^\/]+)\/edit/);
       if (match) {
         const id = match[1];
         setProductId(id);
         setInternalViewMode('detail');
+        // Auto-select product if available
         const product = products.find(p => p.id === id);
         if (product && !selectedProduct) {
           onProductSelect(product);
         }
       }
     } else if (currentPath.includes('/view') || currentPath.match(/\/products\/[^\/]+$/)) {
+      console.log('[ProductsDashboard] Setting mode to detail (view mode)');
       const match = currentPath.match(/\/products\/([^\/]+)(?:\/view)?$/);
       if (match) {
         const id = match[1];
         setProductId(id);
         setInternalViewMode('detail');
+        // Auto-select product if available
         const product = products.find(p => p.id === id);
         if (product && !selectedProduct) {
           onProductSelect(product);
         }
       }
     } else {
+      console.log('[ProductsDashboard] Setting mode to list');
       setInternalViewMode('list');
       setProductId(null);
     }
   }, [location.pathname, products, selectedProduct, onProductSelect, initialViewMode]);
-
+  
+  // Use initial view mode if provided (from routes), otherwise use internal state
   const viewMode = initialViewMode ? (initialViewMode as ViewMode) : internalViewMode;
   const setViewMode = onViewModeChange 
     ? (mode: ViewMode) => onViewModeChange(mode)
     : setInternalViewMode;
+  const [selectedForBulk, setSelectedForBulk] = useState<string[]>([]);
+  const [bulkAction, setBulkAction] = useState<'none' | 'delete' | 'activate' | 'deactivate'>('none');
 
   // Analytics data
   const analytics = {
     total: products.length,
     active: products.filter(p => p.status === 'ACTIVE').length,
     lowStock: products.filter(p => p.inventoryStatus === 'LOW_STOCK').length,
-    outOfStock: products.filter(p => p.inventoryStatus === 'OUT_OF_STOCK').length,
+    outOfStock: products.filter(p => p.inventoryStatus === 'OUT_OF_STOCK').length
   };
 
   const handleViewDetail = useCallback((product: Product) => {
     onProductSelect(product);
     setViewMode('detail');
+    // Navigation is handled by onViewModeChange if provided
     if (!onViewModeChange) {
       navigate(ProductRoutes.view(product.id));
     }
@@ -134,6 +156,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
   const handleBackToList = useCallback(() => {
     setViewMode('list');
     setSelectedForBulk([]);
+    // Navigation is handled by onViewModeChange if provided
     if (!onViewModeChange) {
       navigate(ProductRoutes.list());
     }
@@ -141,6 +164,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
 
   const handleCreateNew = useCallback(() => {
     setViewMode('create');
+    // Navigation is handled by onViewModeChange if provided
     if (!onViewModeChange) {
       navigate(ProductRoutes.create());
     }
@@ -178,20 +202,16 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
         if (bulkAction === 'delete') {
           await onProductDelete(productId);
         } else {
-          const statusUpdate = {
-            activate: { status: 'ACTIVE' },
-            deactivate: { status: 'INACTIVE' }
-          }[bulkAction];
-          
-          if (statusUpdate) {
-            await onProductUpdate(productId, statusUpdate);
-          }
+          await onProductUpdate(productId, { 
+            status: bulkAction === 'activate' ? 'ACTIVE' : 'INACTIVE'
+          });
         }
       }
       
       setSelectedForBulk([]);
       setBulkAction('none');
       onRefresh();
+      
     } catch (error) {
       console.error('Bulk action failed:', error);
     }
@@ -255,12 +275,13 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
             onRefresh();
           }}
           onCancel={handleBackToList}
+          loading={loading}
         />
       </div>
     );
   }
 
-  // Generate breadcrumbs
+  // Generate breadcrumbs (only if router is available)
   const breadcrumbs = hasRouter ? getBreadcrumbs(
     location.pathname, 
     selectedProduct ? selectedProduct.name : undefined
@@ -293,38 +314,39 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
 
   return (
     <div className={`space-y-6 ${className}`}>
+      {/* Breadcrumb Navigation */}
       {renderBreadcrumbs()}
       
-      {/* Analytics Dashboard */}
+      {/* Analytics Dashboard - EXACTLY like Staff Hub */}
       <div className="flex gap-4 mb-6">
         {[
           { 
             icon: Package, 
             value: analytics.total, 
             label: 'Total Products',
-            color: 'rgb(59, 130, 246)',
-            bgColor: 'rgb(219, 234, 254)'
+            color: 'rgb(59, 130, 246)', // blue-500
+            bgColor: 'rgb(219, 234, 254)' // blue-100
           },
           { 
             icon: CheckCircle, 
             value: analytics.active, 
             label: 'Active',
-            color: 'rgb(34, 197, 94)',
-            bgColor: 'rgb(220, 252, 231)'
+            color: 'rgb(34, 197, 94)', // green-500
+            bgColor: 'rgb(220, 252, 231)' // green-100
           },
           { 
             icon: AlertTriangle, 
             value: analytics.lowStock, 
             label: 'Low Stock',
-            color: 'rgb(239, 68, 68)',
-            bgColor: 'rgb(254, 226, 226)'
+            color: 'rgb(239, 68, 68)', // red-500
+            bgColor: 'rgb(254, 226, 226)' // red-100
           },
           { 
             icon: XCircle, 
             value: analytics.outOfStock, 
             label: 'Out of Stock',
-            color: 'rgb(168, 85, 247)',
-            bgColor: 'rgb(243, 232, 255)'
+            color: 'rgb(168, 85, 247)', // purple-500
+            bgColor: 'rgb(243, 232, 255)' // purple-100
           }
         ].map(({ icon: Icon, value, label, color, bgColor }) => (
           <Card key={label} className="flex-1 hover:shadow-md transition-all duration-200">
@@ -348,7 +370,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
         ))}
       </div>
 
-      {/* Action Bar */}
+      {/* Action Bar - EXACTLY like Staff Hub */}
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
@@ -405,7 +427,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
         </CardContent>
       </Card>
 
-      {/* Search and Filters */}
+      {/* Search and Filters - EXACTLY like Staff Hub */}
       <ProductsFilters
         onSearch={onSearch}
         onFilterChange={onFilterChange}
@@ -415,7 +437,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
         currentSearchQuery={searchQuery}
       />
 
-      {/* Bulk Selection Controls */}
+      {/* Bulk Selection Controls - EXACTLY like Staff Hub */}
       {viewMode === 'bulk' && (
         <div style={{
           padding: '1rem',
@@ -440,7 +462,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
         </div>
       )}
 
-      {/* Enhanced Product List */}
+      {/* Enhanced Product List - CARD LAYOUT like Staff Hub */}
       <Card className="overflow-hidden">
         {error ? (
           <div style={{
@@ -453,11 +475,11 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
               justifyContent: 'center',
               width: '80px',
               height: '80px',
-              backgroundColor: 'rgb(254, 226, 226)',
+              backgroundColor: 'rgb(254, 226, 226)', // red-100
               borderRadius: '50%',
               margin: '0 auto 1rem auto'
             }}>
-              <RefreshCw size={32} color="rgb(239, 68, 68)" />
+              <AlertTriangle size={32} color="rgb(239, 68, 68)" />
             </div>
             <h3 style={{ 
               color: 'var(--product-dashboard-foreground, hsl(var(--foreground)))',
@@ -472,7 +494,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
               marginBottom: '1.5rem',
               fontSize: '0.875rem'
             }}>
-              {error || 'An error occurred while loading products'}
+              {error}
             </p>
             <button
               onClick={onRefresh}
@@ -481,7 +503,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                 alignItems: 'center',
                 gap: '0.5rem',
                 padding: '0.75rem 1.5rem',
-                backgroundColor: 'rgb(59, 130, 246)',
+                backgroundColor: 'rgb(59, 130, 246)', // blue-500
                 color: 'white',
                 border: 'none',
                 borderRadius: '0.5rem',
@@ -491,10 +513,10 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                 transition: 'background-color 0.2s ease-in-out'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgb(37, 99, 235)';
+                e.currentTarget.style.backgroundColor = 'rgb(37, 99, 235)'; // blue-600
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgb(59, 130, 246)';
+                e.currentTarget.style.backgroundColor = 'rgb(59, 130, 246)'; // blue-500
               }}
             >
               <RefreshCw size={16} />
@@ -513,7 +535,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
               justifyContent: 'center',
               width: '80px',
               height: '80px',
-              backgroundColor: 'rgb(243, 244, 246)',
+              backgroundColor: 'rgb(243, 244, 246)', // gray-100
               borderRadius: '50%',
               margin: '0 auto 1rem auto'
             }}>
@@ -564,7 +586,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                     />
                   )}
                   
-                  {/* Avatar */}
+                  {/* Avatar - EXACTLY like Staff Hub */}
                   <div style={{
                     width: '3rem',
                     height: '3rem',
@@ -591,7 +613,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                     )}
                   </div>
                   
-                  {/* Details */}
+                  {/* Details - EXACTLY like Staff Hub */}
                   <div 
                     style={{ flex: 1, minWidth: 0 }}
                     onClick={() => !viewMode.includes('bulk') && handleViewDetail(product)}
@@ -614,11 +636,11 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                         fontSize: '0.75rem',
                         fontWeight: '500',
                         backgroundColor: product.status === 'ACTIVE' 
-                          ? 'var(--product-dashboard-verified-bg, hsl(var(--primary)) / 0.1)'
-                          : 'var(--product-dashboard-unverified-bg, hsl(var(--secondary)) / 0.1)',
+                          ? 'var(--product-dashboard-manager-bg, hsl(var(--primary)) / 0.1)'
+                          : 'var(--product-dashboard-employee-bg, hsl(var(--secondary)) / 0.1)',
                         color: product.status === 'ACTIVE'
-                          ? 'var(--product-dashboard-verified-text, hsl(var(--primary)))'
-                          : 'var(--product-dashboard-unverified-text, hsl(var(--secondary-foreground)))',
+                          ? 'var(--product-dashboard-manager-text, hsl(var(--primary)))'
+                          : 'var(--product-dashboard-employee-text, hsl(var(--secondary-foreground)))',
                         textTransform: 'capitalize'
                       }}>
                         {product.status || 'N/A'}
@@ -672,7 +694,7 @@ export const ProductsManagementDashboard: React.FC<ProductsManagementDashboardPr
                     </div>
                   </div>
                   
-                  {/* Quick actions */}
+                  {/* Quick actions - EXACTLY like Staff Hub */}
                   {viewMode !== 'bulk' && (
                     <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem' }}>
                       <button

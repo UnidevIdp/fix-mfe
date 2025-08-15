@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Product } from '../../services/productsApi';
 import { LoadingCard, Button, Card, CardContent, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Badge } from '@workspace/ui';
-import { Search, X, Package, MoreHorizontal } from 'lucide-react';
+import { Search, X, Package } from 'lucide-react';
 
-// Custom debounce hook
+// Custom debounce hook - EXACTLY like Staff Hub
 const useDebounce = (value: string, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   const [isDebouncing, setIsDebouncing] = useState(false);
@@ -92,7 +92,7 @@ export const ProductsList: React.FC<ProductsListProps> = ({
 
   const productsToDisplay = showSearch || showFilters ? filteredProducts : products;
 
-  // Show loading state
+  // Show loading state - EXACTLY like Staff Hub
   if (loading) {
     return (
       <div className={`space-y-3 ${className}`}>
@@ -133,7 +133,7 @@ export const ProductsList: React.FC<ProductsListProps> = ({
     );
   }
 
-  // Handle undefined or null products array
+  // Handle undefined or null products array - EXACTLY like Staff Hub
   if (!products || products.length === 0) {
     return (
       <div className={className}>
@@ -173,6 +173,41 @@ export const ProductsList: React.FC<ProductsListProps> = ({
                       </Button>
                     )}
                   </div>
+                  
+                  {/* Enhanced Search status indicator */}
+                  {searchTerm && (
+                    <div className="mt-3 flex items-center justify-between">
+                      <div className="text-xs flex items-center gap-2">
+                        {isDebouncing ? (
+                          <span className="flex items-center gap-1.5 text-amber-600 font-medium">
+                            <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+                            Searching for "{searchTerm}"...
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1.5 text-green-600 font-medium">
+                            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                            Found 0 results
+                            {debouncedSearchTerm && (
+                              <span className="text-gray-500 font-normal">
+                                for "{debouncedSearchTerm}"
+                              </span>
+                            )}
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Quick clear shortcut */}
+                      {!isDebouncing && searchTerm && (
+                        <button
+                          onClick={clearSearch}
+                          className="text-xs text-gray-400 hover:text-red-500 transition-colors duration-200 flex items-center gap-1"
+                        >
+                          <X className="h-3 w-3" />
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
                 
                 {showFilters && (
@@ -204,41 +239,6 @@ export const ProductsList: React.FC<ProductsListProps> = ({
                   </div>
                 )}
               </div>
-              
-              {/* Enhanced Search status indicator */}
-              {searchTerm && (
-                <div className="mt-3 flex items-center justify-between">
-                  <div className="text-xs flex items-center gap-2">
-                    {isDebouncing ? (
-                      <span className="flex items-center gap-1.5 text-amber-600 font-medium">
-                        <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
-                        Searching for "{searchTerm}"...
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1.5 text-green-600 font-medium">
-                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                        Found 0 results
-                        {debouncedSearchTerm && (
-                          <span className="text-gray-500 font-normal">
-                            for "{debouncedSearchTerm}"
-                          </span>
-                        )}
-                      </span>
-                    )}
-                  </div>
-                  
-                  {/* Quick clear shortcut */}
-                  {!isDebouncing && searchTerm && (
-                    <button
-                      onClick={clearSearch}
-                      className="text-xs text-gray-400 hover:text-red-500 transition-colors duration-200 flex items-center gap-1"
-                    >
-                      <X className="h-3 w-3" />
-                      Clear
-                    </button>
-                  )}
-                </div>
-              )}
             </CardContent>
           </Card>
         )}
@@ -271,7 +271,7 @@ export const ProductsList: React.FC<ProductsListProps> = ({
 
   return (
     <div className={className}>
-      {/* Enhanced Search and Filters */}
+      {/* Enhanced Search and Filters - EXACTLY like Staff Hub */}
       {showSearch && (
         <Card className="hover:shadow-md transition-shadow duration-200 mb-6">
           <CardContent className="p-6">
@@ -378,7 +378,7 @@ export const ProductsList: React.FC<ProductsListProps> = ({
         </Card>
       )}
       
-      {/* Product List */}
+      {/* Product List - CARD LAYOUT like Staff Hub */}
       <div className="space-y-3">
         {productsToDisplay.map((product) => {
           const isSelected = selectedProduct?.id === product.id;
@@ -543,7 +543,7 @@ export const ProductsList: React.FC<ProductsListProps> = ({
                   </div>
                 </div>
                 
-                {/* Chevron indicator */}
+                {/* Chevron indicator - EXACTLY like Staff Hub */}
                 <div style={{
                   color: 'var(--product-list-chevron-color, hsl(var(--muted-foreground)))',
                   fontSize: '1rem',

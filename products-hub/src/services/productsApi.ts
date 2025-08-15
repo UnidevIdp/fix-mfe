@@ -300,3 +300,31 @@ export const productsApi = {
     return httpClient.post(`${API_BASE_URL}/products/search`, searchRequest);
   },
 };
+
+// Document upload functionality for products
+export const uploadProductDocuments = async (productId: string, files: File[]): Promise<any[]> => {
+  const uploadPromises = files.map(async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('product_id', productId);
+    formData.append('isPublic', 'false');
+    formData.append('tags', `document_type:product_document,uploaded_at:${new Date().toISOString()}`);
+
+    const response = await fetch('/api/v1/products/documents/upload', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'X-Tenant-ID': localStorage.getItem('tenantId') || '',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to upload ${file.name}: ${response.statusText}`);
+    }
+
+    return response.json();
+  });
+
+  return Promise.all(uploadPromises);
+};

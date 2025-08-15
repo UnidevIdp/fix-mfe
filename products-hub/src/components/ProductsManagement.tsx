@@ -1,11 +1,31 @@
-import React, { useState, useMemo } from 'react';
-import { useProducts, useCategories, useDeleteProduct, useUpdateProductStatus } from '../hooks/useProducts';
-import { Product, ProductFilters } from '../services/productsApi';
-import { mockProducts, mockCategories } from '../services/mockData';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Product } from '../services/productsApi';
+import { useProducts, useDeleteProduct, useUpdateProductStatus } from '../hooks/useProducts';
+import { useMfeRouter } from '@workspace/shared';
 import { ProductsManagementDashboard } from './ProductsManagementDashboard';
 
-export const ProductsManagement: React.FC = () => {
-  const [filters, setFilters] = useState<ProductFilters>({
+interface ProductsManagementProps {
+  initialViewMode?: 'list' | 'detail' | 'create' | 'edit';
+}
+
+export const ProductsManagement: React.FC<ProductsManagementProps> = ({ 
+  initialViewMode = 'list' 
+}) => {
+  let id: string | undefined;
+  
+  try {
+    // Try to get params from React Router
+    const params = useParams<{ id: string }>();
+    id = params.id;
+  } catch (error) {
+    // Fallback for MFE context
+    id = undefined;
+  }
+  
+  const { navigate, location, hasRouter } = useMfeRouter('products-hub');
+  
+  const [filters, setFilters] = useState({
     page: 1,
     limit: 20,
     sortBy: 'createdAt',
@@ -24,28 +44,45 @@ export const ProductsManagement: React.FC = () => {
     refetch
   } = useProducts(filters);
 
-  const { 
-    data: categoriesResponse, 
-    isLoading: isLoadingCategories 
-  } = useCategories();
-
   const deleteProductMutation = useDeleteProduct();
   const updateStatusMutation = useUpdateProductStatus();
 
   // Use mock data in development if API fails
   const products = useMemo(() => {
     if (isDevelopment && (!productsResponse || productsError)) {
-      return mockProducts;
+      return require('../services/mockData').mockProducts;
     }
     return productsResponse?.data || [];
   }, [productsResponse, productsError, isDevelopment]);
 
-  const categories = useMemo(() => {
-    if (isDevelopment && (!categoriesResponse || !categoriesResponse.data)) {
-      return mockCategories;
+  // Load product if ID is provided
+  useEffect(() => {
+    if (id && products.length > 0) {
+      const product = products.find(p => p.id === id);
+      if (product) {
+        setSelectedProduct(product);
+      }
     }
-    return categoriesResponse?.data || [];
-  }, [categoriesResponse, isDevelopment]);
+  }, [id, products]);
+
+  // Update mode based on URL changes
+  useEffect(() => {
+    const path = location.pathname;
+    console.log('Current path:', path, 'ID:', id);
+    
+    if (path.includes('/create')) {
+      console.log('Setting mode to create');
+    } else if (path.includes('/edit') && id) {
+      console.log('Setting mode to edit for ID:', id);
+    } else if (path.includes('/view') && id) {
+      console.log('Setting mode to detail for ID:', id);
+    } else if (id && !path.includes('/edit') && !path.includes('/view')) {
+      // Legacy route /products/:id
+      console.log('Setting mode to detail (legacy) for ID:', id);
+    } else {
+      console.log('Setting mode to list');
+    }
+  }, [location.pathname, id]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -65,15 +102,26 @@ export const ProductsManagement: React.FC = () => {
   };
 
   const handleProductCreate = async (data: any): Promise<Product | null> => {
-    // Implementation for creating product
-    console.log('Create product:', data);
-    return null;
+    try {
+      // Implementation for creating product
+      console.log('Create product:', data);
+      // Simulate success for now
+      const newProduct = { ...data, id: Date.now().toString() };
+      return newProduct;
+    } catch (error) {
+      console.error('Failed to create product:', error);
+      return null;
+    }
   };
 
   const handleProductUpdate = async (id: string, data: any): Promise<Product | null> => {
     try {
-      await updateStatusMutation.mutateAsync({ id, status: data.status });
-      return null;
+      if (data.status) {
+        await updateStatusMutation.mutateAsync({ id, status: data.status });
+      }
+      // Return updated product
+      const updatedProduct = products.find(p => p.id === id);
+      return updatedProduct ? { ...updatedProduct, ...data } : null;
     } catch (error) {
       console.error('Failed to update product:', error);
       return null;
@@ -87,6 +135,30 @@ export const ProductsManagement: React.FC = () => {
     } catch (error) {
       console.error('Failed to delete product:', error);
       return false;
+    }
+  };
+
+  const handleViewModeChange = (mode: string) => {
+    // Update URL based on mode (only if router is available)
+    if (hasRouter) {
+      switch (mode) {
+        case 'list':
+          navigate('/products');
+          break;
+        case 'create':
+          navigate('/products/create');
+          break;
+        case 'edit':
+          if (selectedProduct) {
+            navigate(`/products/${selectedProduct.id}/edit`);
+          }
+          break;
+        case 'detail':
+          if (selectedProduct) {
+            navigate(`/products/${selectedProduct.id}/view`);
+          }
+          break;
+      }
     }
   };
 
@@ -105,6 +177,8 @@ export const ProductsManagement: React.FC = () => {
       onSearch={handleSearch}
       onFilterChange={handleFilterChange}
       onRefresh={handleRefresh}
+      initialViewMode={initialViewMode}
+      onViewModeChange={handleViewModeChange}
       className="w-full"
     />
   );

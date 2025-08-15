@@ -1,28 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import ProductsManagement from './components/ProductsManagement';
 import ProductsAnalytics from './components/stats/ProductsAnalytics';
 import './styles/global.css';
-
-// Create a query client with default options
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 3,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      refetchOnWindowFocus: false,
-    },
-    mutations: {
-      retry: 1,
-    },
-  },
-});
+import './styles/animations.css';
 
 export const App: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <Router>
         <div className="min-h-screen bg-gray-50">
           <header className="bg-white shadow-sm border-b">
@@ -57,7 +43,7 @@ export const App: React.FC = () => {
         </div>
       </Router>
       <Toaster position="top-right" />
-    </QueryClientProvider>
+    </>
   );
 };
 

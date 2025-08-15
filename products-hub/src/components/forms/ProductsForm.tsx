@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Product, CreateProductRequest } from '../../services/productsApi';
+import { Product } from '../../services/productsApi';
 import { Spinner } from '@workspace/ui';
 
 interface ProductsFormProps {
@@ -256,257 +256,340 @@ export const ProductsForm: React.FC<ProductsFormProps> = ({
     );
   };
 
-  return (
-    <div style={{
-      padding: '1.5rem',
-      backgroundColor: 'var(--product-form-bg, hsl(var(--card)))',
-      borderRadius: '1rem',
-      border: '1px solid var(--product-form-container-border, hsl(var(--border)))',
-      boxShadow: 'var(--product-form-shadow, 0 4px 6px -1px rgb(0 0 0 / 0.1))'
-    }}>
-      <div style={{
-        marginBottom: '1.5rem',
-        paddingBottom: '1rem',
-        borderBottom: '1px solid var(--product-form-divider, hsl(var(--border)))'
-      }}>
-        <h3 style={{
-          fontSize: '1.25rem',
-          fontWeight: '700',
-          color: 'var(--product-form-title-color, hsl(var(--foreground)))',
-          margin: '0 0 0.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem'
-        }}>
-          {product ? '✏️ Edit Product' : '➕ Add New Product'}
-        </h3>
-        <p style={{
-          fontSize: '0.875rem',
-          color: 'var(--product-form-subtitle-color, hsl(var(--muted-foreground)))',
-          margin: 0
-        }}>
-          {product ? 'Update the information below to modify this product.' : 'Fill in the details below to add a new product to your catalog.'}
-        </p>
-      </div>
++  const handleProductSelect = (product: Product) => {
++    setSelectedProduct(product);
++  };
++
++  const handleProductCreate = async (data: any): Promise<Product | null> => {
++    try {
++      console.log('Create product:', data);
++      const newProduct = { ...data, id: Date.now().toString() };
++      return newProduct;
++    } catch (error) {
++      console.error('Failed to create product:', error);
++      return null;
++    }
++  };
++
++  const handleProductUpdate = async (id: string, data: any): Promise<Product | null> => {
++    try {
++      if (data.status) {
++        await updateStatusMutation.mutateAsync({ id, status: data.status });
++      }
++      const updatedProduct = products.find(p => p.id === id);
++      return updatedProduct ? { ...updatedProduct, ...data } : null;
++    } catch (error) {
++      console.error('Failed to update product:', error);
++      return null;
++    }
++  };
++
++  const handleProductDelete = async (id: string): Promise<boolean> => {
++    try {
++      await deleteProductMutation.mutateAsync(id);
++      return true;
++    } catch (error) {
++      console.error('Failed to delete product:', error);
++      return false;
++    }
++  };
++
++  const handleViewModeChange = (mode: string) => {
++    // Update URL based on mode (only if router is available)
++    if (hasRouter) {
++      switch (mode) {
++        case 'list':
++          navigate('/products');
++          break;
++        case 'create':
++          navigate('/products/create');
++          break;
++        case 'edit':
++          if (selectedProduct) {
++            navigate(`/products/${selectedProduct.id}/edit`);
++          }
++          break;
++        case 'detail':
++          if (selectedProduct) {
++            navigate(`/products/${selectedProduct.id}/view`);
++          }
++          break;
++      }
++    }
++  };
++
+   return (
+     <ProductsManagementDashboard
+       products={products}
+       selectedProduct={selectedProduct}
+       loading={isLoadingProducts}
+       error={productsError?.message || null}
+       searchQuery={searchQuery}
+       filters={filters}
+       onProductSelect={handleProductSelect}
+       onProductCreate={handleProductCreate}
+       onProductUpdate={handleProductUpdate}
+       onProductDelete={handleProductDelete}
+       onSearch={handleSearch}
+       onFilterChange={handleFilterChange}
+       onRefresh={handleRefresh}
++      initialViewMode={initialViewMode}
++      onViewModeChange={handleViewModeChange}
+       className="w-full"
+     />
+   );
 
-      <form onSubmit={handleSubmit} className={className}>
-        {/* Basic Information Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            📦 Basic Information
-          </h4>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.5rem'
-          }}>
-            {renderField('name', 'Product Name', 'text', true)}
-            {renderField('sku', 'SKU', 'text', true)}
-            {renderField('description', 'Description', 'textarea')}
-            {renderField('categoryId', 'Category', 'select', true, [
-              { value: '', label: 'Select Category' },
-              { value: 'cat-1', label: 'Electronics' },
-              { value: 'cat-2', label: 'Clothing' },
-              { value: 'cat-3', label: 'Books' },
-              { value: 'cat-4', label: 'Home & Garden' },
-              { value: 'cat-5', label: 'Sports & Outdoors' }
-            ])}
-            {renderField('vendorId', 'Vendor ID', 'text', true)}
-          </div>
-        </div>
++  return (
++    <div style={{
++      padding: '1.5rem',
++      backgroundColor: 'var(--product-form-bg, hsl(var(--card)))',
++      borderRadius: '1rem',
++      border: '1px solid var(--product-form-container-border, hsl(var(--border)))',
++      boxShadow: 'var(--product-form-shadow, 0 4px 6px -1px rgb(0 0 0 / 0.1))'
++    }}>
++      <div style={{
++        marginBottom: '1.5rem',
++        paddingBottom: '1rem',
++        borderBottom: '1px solid var(--product-form-divider, hsl(var(--border)))'
++      }}>
++        <h3 style={{
++          fontSize: '1.25rem',
++          fontWeight: '700',
++          color: 'var(--product-form-title-color, hsl(var(--foreground)))',
++          margin: '0 0 0.5rem',
++          display: 'flex',
++          alignItems: 'center',
++          gap: '0.5rem'
++        }}>
++          {product ? '✏️ Edit Product' : '➕ Add New Product'}
++        </h3>
++        <p style={{
++          fontSize: '0.875rem',
++          color: 'var(--product-form-subtitle-color, hsl(var(--muted-foreground)))',
++          margin: 0
++        }}>
++          {product ? 'Update the information below to modify this product.' : 'Fill in the details below to add a new product to your catalog.'}
++        </p>
++      </div>
 
-        {/* Pricing Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            💰 Pricing Information
-          </h4>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.5rem'
-          }}>
-            {renderField('price', 'Price ($)', 'number', true)}
-            {renderField('comparePrice', 'Compare Price ($)', 'number')}
-            {renderField('costPrice', 'Cost Price ($)', 'number')}
-          </div>
-        </div>
++      <form onSubmit={handleSubmit} className={className}>
++        {/* Basic Information Section */}
++        <div style={{ marginBottom: '2rem' }}>
++          <h4 style={{
++            fontSize: '1rem',
++            fontWeight: '600',
++            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
++            margin: '0 0 1rem',
++            padding: '0.5rem 0',
++            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
++            display: 'flex',
++            alignItems: 'center',
++            gap: '0.5rem'
++          }}>
++            📦 Basic Information
++          </h4>
++          <div style={{ 
++            display: 'grid', 
++            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
++            gap: '1.5rem'
++          }}>
++            {renderField('name', 'Product Name', 'text', true)}
++            {renderField('sku', 'SKU', 'text', true)}
++            {renderField('description', 'Description', 'textarea')}
++            {renderField('categoryId', 'Category', 'select', true, [
++              { value: '', label: 'Select Category' },
++              { value: 'cat-1', label: 'Electronics' },
++              { value: 'cat-2', label: 'Clothing' },
++              { value: 'cat-3', label: 'Books' },
++              { value: 'cat-4', label: 'Home & Garden' },
++              { value: 'cat-5', label: 'Sports & Outdoors' }
++            ])}
++            {renderField('vendorId', 'Vendor ID', 'text', true)}
++          </div>
++        </div>
 
-        {/* Inventory Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            📊 Inventory & Physical Properties
-          </h4>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.5rem'
-          }}>
-            {renderField('quantity', 'Quantity', 'number')}
-            {renderField('lowStockThreshold', 'Low Stock Threshold', 'number')}
-            {renderField('weight', 'Weight (kg)', 'number')}
-            {renderField('inventoryStatus', 'Inventory Status', 'select', false, [
-              { value: 'IN_STOCK', label: 'In Stock' },
-              { value: 'LOW_STOCK', label: 'Low Stock' },
-              { value: 'OUT_OF_STOCK', label: 'Out of Stock' },
-              { value: 'BACK_ORDER', label: 'Back Order' },
-              { value: 'DISCONTINUED', label: 'Discontinued' }
-            ])}
-          </div>
-        </div>
++        {/* Pricing Section */}
++        <div style={{ marginBottom: '2rem' }}>
++          <h4 style={{
++            fontSize: '1rem',
++            fontWeight: '600',
++            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
++            margin: '0 0 1rem',
++            padding: '0.5rem 0',
++            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
++            display: 'flex',
++            alignItems: 'center',
++            gap: '0.5rem'
++          }}>
++            💰 Pricing Information
++          </h4>
++          <div style={{ 
++            display: 'grid', 
++            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
++            gap: '1.5rem'
++          }}>
++            {renderField('price', 'Price ($)', 'number', true)}
++            {renderField('comparePrice', 'Compare Price ($)', 'number')}
++            {renderField('costPrice', 'Cost Price ($)', 'number')}
++          </div>
++        </div>
 
-        {/* Additional Information Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            🔍 Additional Information
-          </h4>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: '1fr',
-            gap: '1.5rem'
-          }}>
-            {renderField('searchKeywords', 'Search Keywords', 'textarea')}
-          </div>
-        </div>
++        {/* Inventory Section */}
++        <div style={{ marginBottom: '2rem' }}>
++          <h4 style={{
++            fontSize: '1rem',
++            fontWeight: '600',
++            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
++            margin: '0 0 1rem',
++            padding: '0.5rem 0',
++            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
++            display: 'flex',
++            alignItems: 'center',
++            gap: '0.5rem'
++          }}>
++            📊 Inventory & Physical Properties
++          </h4>
++          <div style={{ 
++            display: 'grid', 
++            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
++            gap: '1.5rem'
++          }}>
++            {renderField('quantity', 'Quantity', 'number')}
++            {renderField('lowStockThreshold', 'Low Stock Threshold', 'number')}
++            {renderField('weight', 'Weight (kg)', 'number')}
++            {renderField('inventoryStatus', 'Inventory Status', 'select', false, [
++              { value: 'IN_STOCK', label: 'In Stock' },
++              { value: 'LOW_STOCK', label: 'Low Stock' },
++              { value: 'OUT_OF_STOCK', label: 'Out of Stock' },
++              { value: 'BACK_ORDER', label: 'Back Order' },
++              { value: 'DISCONTINUED', label: 'Discontinued' }
++            ])}
++          </div>
++        </div>
 
-        {/* Status Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            ⚙️ Status
-          </h4>
-          {renderField('status', 'Product Status', 'select', true, [
-            { value: 'ACTIVE', label: 'Active' },
-            { value: 'DRAFT', label: 'Draft' },
-            { value: 'PENDING', label: 'Pending' },
-            { value: 'INACTIVE', label: 'Inactive' }
-          ])}
-        </div>
++        {/* Additional Information Section */}
++        <div style={{ marginBottom: '2rem' }}>
++          <h4 style={{
++            fontSize: '1rem',
++            fontWeight: '600',
++            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
++            margin: '0 0 1rem',
++            padding: '0.5rem 0',
++            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
++            display: 'flex',
++            alignItems: 'center',
++            gap: '0.5rem'
++          }}>
++            🔍 Additional Information
++          </h4>
++          <div style={{ 
++            display: 'grid', 
++            gridTemplateColumns: '1fr',
++            gap: '1.5rem'
++          }}>
++            {renderField('searchKeywords', 'Search Keywords', 'textarea')}
++          </div>
++        </div>
 
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'flex-end', 
-          gap: '0.75rem',
-          paddingTop: '1rem',
-          borderTop: '1px solid var(--product-form-divider, hsl(var(--border)))'
-        }}>
-          {onCancel && (
-            <button
-              type="button"
-              onClick={onCancel}
-              disabled={loading}
-              style={{
-                padding: '0.75rem 1.5rem',
-                border: '2px solid var(--product-form-cancel-border, hsl(var(--border)))',
-                borderRadius: '0.5rem',
-                backgroundColor: 'var(--product-form-cancel-bg, hsl(var(--background)))',
-                color: 'var(--product-form-cancel-text, hsl(var(--foreground)))',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                transition: 'all 0.2s ease-in-out',
-                opacity: loading ? 0.6 : 1
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.backgroundColor = 'var(--product-form-cancel-hover-bg, hsl(var(--muted)))';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.backgroundColor = 'var(--product-form-cancel-bg, hsl(var(--background)))';
-                }
-              }}
-            >
-              Cancel
-            </button>
-          )}
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: '0.75rem 1.5rem',
-              border: 'none',
-              borderRadius: '0.5rem',
-              backgroundColor: loading 
-                ? 'var(--product-form-submit-disabled-bg, hsl(var(--muted)))'
-                : 'var(--product-form-submit-bg, hsl(var(--primary)))',
-              color: 'var(--product-form-submit-text, hsl(var(--primary-foreground)))',
-              fontSize: '0.875rem',
-              fontWeight: '600',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s ease-in-out',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              opacity: loading ? 0.8 : 1
-            }}
-            onMouseEnter={(e) => {
-              if (!loading) {
-                e.currentTarget.style.backgroundColor = 'var(--product-form-submit-hover-bg, hsl(var(--primary)) / 0.9)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!loading) {
-                e.currentTarget.style.backgroundColor = 'var(--product-form-submit-bg, hsl(var(--primary)))';
-              }
-            }}
-          >
-            {loading && <Spinner size="sm" />}
-            {loading ? 'Saving...' : (product ? '💾 Update Product' : '✅ Create Product')}
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-};
++        {/* Status Section */}
++        <div style={{ marginBottom: '2rem' }}>
++          <h4 style={{
++            fontSize: '1rem',
++            fontWeight: '600',
++            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
++            margin: '0 0 1rem',
++            padding: '0.5rem 0',
++            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
++            display: 'flex',
++            alignItems: 'center',
++            gap: '0.5rem'
++          }}>
++            ⚙️ Status
++          </h4>
++          {renderField('status', 'Product Status', 'select', true, [
++            { value: 'ACTIVE', label: 'Active' },
++            { value: 'DRAFT', label: 'Draft' },
++            { value: 'PENDING', label: 'Pending' },
++            { value: 'INACTIVE', label: 'Inactive' }
++          ])}
++        </div>
 
-export default ProductsForm;
++        <div style={{ 
++          display: 'flex', 
++          justifyContent: 'flex-end', 
++          gap: '0.75rem',
++          paddingTop: '1rem',
++          borderTop: '1px solid var(--product-form-divider, hsl(var(--border)))'
++        }}>
++          {onCancel && (
++            <button
++              type="button"
++              onClick={onCancel}
++              disabled={loading}
++              style={{
++                padding: '0.75rem 1.5rem',
++                border: '2px solid var(--product-form-cancel-border, hsl(var(--border)))',
++                borderRadius: '0.5rem',
++                backgroundColor: 'var(--product-form-cancel-bg, hsl(var(--background)))',
++                color: 'var(--product-form-cancel-text, hsl(var(--foreground)))',
++                fontSize: '0.875rem',
++                fontWeight: '500',
++                cursor: loading ? 'not-allowed' : 'pointer',
++                transition: 'all 0.2s ease-in-out',
++                opacity: loading ? 0.6 : 1
++              }}
++              onMouseEnter={(e) => {
++                if (!loading) {
++                  e.currentTarget.style.backgroundColor = 'var(--product-form-cancel-hover-bg, hsl(var(--muted)))';
++                }
++              }}
++              onMouseLeave={(e) => {
++                if (!loading) {
++                  e.currentTarget.style.backgroundColor = 'var(--product-form-cancel-bg, hsl(var(--background)))';
++                }
++              }}
++            >
++              Cancel
++            </button>
++          )}
++          <button
++            type="submit"
++            disabled={loading}
++            style={{
++              padding: '0.75rem 1.5rem',
++              border: 'none',
++              borderRadius: '0.5rem',
++              backgroundColor: loading 
++                ? 'var(--product-form-submit-disabled-bg, hsl(var(--muted)))'
++                : 'var(--product-form-submit-bg, hsl(var(--primary)))',
++              color: 'var(--product-form-submit-text, hsl(var(--primary-foreground)))',
++              fontSize: '0.875rem',
++              fontWeight: '600',
++              cursor: loading ? 'not-allowed' : 'pointer',
++              transition: 'all 0.2s ease-in-out',
++              display: 'flex',
++              alignItems: 'center',
++              gap: '0.5rem',
++              opacity: loading ? 0.8 : 1
++            }}
++            onMouseEnter={(e) => {
++              if (!loading) {
++                e.currentTarget.style.backgroundColor = 'var(--product-form-submit-hover-bg, hsl(var(--primary)) / 0.9)';
++              }
++            }}
++            onMouseLeave={(e) => {
++              if (!loading) {
++                e.currentTarget.style.backgroundColor = 'var(--product-form-submit-bg, hsl(var(--primary)))';
++              }
++            }}
++          >
++            {loading && <Spinner size="sm" />}
++            {loading ? 'Saving...' : (product ? '💾 Update Product' : '✅ Create Product')}
++          </button>
++        </div>
++      </form>
++    </div>
++  );
++};
+
++export default ProductsForm;
