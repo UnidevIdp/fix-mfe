@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Product } from '../services/productsApi';
 import { useProducts, useDeleteProduct, useUpdateProductStatus } from '../hooks/useProducts';
-import { useMfeRouter } from '@workspace/shared';
 import { ProductsManagementDashboard } from './ProductsManagementDashboard';
 import { mockProducts } from '../services/mockData';
 
@@ -23,8 +22,6 @@ export const ProductsManagement: React.FC<ProductsManagementProps> = ({
     // Fallback for MFE context
     id = undefined;
   }
-  
-  const { navigate, location, hasRouter } = useMfeRouter('products-hub');
   
   const [filters, setFilters] = useState({
     page: 1,
@@ -65,25 +62,6 @@ export const ProductsManagement: React.FC<ProductsManagementProps> = ({
       }
     }
   }, [id, products]);
-
-  // Update mode based on URL changes
-  useEffect(() => {
-    const path = location.pathname;
-    console.log('Current path:', path, 'ID:', id);
-    
-    if (path.includes('/create')) {
-      console.log('Setting mode to create');
-    } else if (path.includes('/edit') && id) {
-      console.log('Setting mode to edit for ID:', id);
-    } else if (path.includes('/view') && id) {
-      console.log('Setting mode to detail for ID:', id);
-    } else if (id && !path.includes('/edit') && !path.includes('/view')) {
-      // Legacy route /products/:id
-      console.log('Setting mode to detail (legacy) for ID:', id);
-    } else {
-      console.log('Setting mode to list');
-    }
-  }, [location.pathname, id]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -139,30 +117,6 @@ export const ProductsManagement: React.FC<ProductsManagementProps> = ({
     }
   };
 
-  const handleViewModeChange = (mode: string) => {
-    // Update URL based on mode (only if router is available)
-    if (hasRouter) {
-      switch (mode) {
-        case 'list':
-          navigate('/products');
-          break;
-        case 'create':
-          navigate('/products/create');
-          break;
-        case 'edit':
-          if (selectedProduct) {
-            navigate(`/products/${selectedProduct.id}/edit`);
-          }
-          break;
-        case 'detail':
-          if (selectedProduct) {
-            navigate(`/products/${selectedProduct.id}/view`);
-          }
-          break;
-      }
-    }
-  };
-
   return (
     <ProductsManagementDashboard
       products={products}
@@ -179,7 +133,6 @@ export const ProductsManagement: React.FC<ProductsManagementProps> = ({
       onFilterChange={handleFilterChange}
       onRefresh={handleRefresh}
       initialViewMode={initialViewMode}
-      onViewModeChange={handleViewModeChange}
       className="w-full"
     />
   );
