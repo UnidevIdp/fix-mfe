@@ -85,17 +85,3 @@ export const CouponsFilters: React.FC<CouponsFiltersProps> = ({
 };
 
 export default CouponsFilters;
-      searchQuery={searchQuery}
-      onSearchChange={onSearchChange}
-      filters={filterOptions}
-      onFilterChange={handleFilterUpdate}
-      onClearFilters={onClearFilters}
-      searchPlaceholder="Search coupons by code, description..."
-      className={className}
-    />
-  );
-};
-
-export default CouponsFilters;
-  )
-}
