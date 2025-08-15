@@ -1,0 +1,366 @@
+{
+  "id": "staffHub",
+  "name": "staffHub",
+  "metaData": {
+    "name": "staffHub",
+    "type": "app",
+    "buildInfo": {
+      "buildVersion": "0.1.0",
+      "buildName": "@common/staff-hub"
+    },
+    "remoteEntry": {
+      "name": "remoteEntry.js",
+      "path": "",
+      "type": "global"
+    },
+    "types": {
+      "path": "",
+      "name": "",
+      "zip": "@mf-types.zip",
+      "api": "@mf-types.d.ts"
+    },
+    "globalName": "staffHub",
+    "pluginVersion": "0.15.0",
+    "prefetchInterface": false,
+    "publicPath": "https://staff-hub.tesseract-hub.com/"
+  },
+  "shared": [
+    {
+      "id": "staffHub:@workspace/shared",
+      "name": "@workspace/shared",
+      "version": "0",
+      "singleton": true,
+      "requiredVersion": "workspace:*",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    },
+    {
+      "id": "staffHub:@workspace/ui",
+      "name": "@workspace/ui",
+      "version": "0",
+      "singleton": true,
+      "requiredVersion": "workspace:*",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    },
+    {
+      "id": "staffHub:react-dom",
+      "name": "react-dom",
+      "version": "19.1.1",
+      "singleton": true,
+      "requiredVersion": "^19.1.0",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    },
+    {
+      "id": "staffHub:react",
+      "name": "react",
+      "version": "19.1.1",
+      "singleton": true,
+      "requiredVersion": "^19.1.0",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "remoteEntry.js",
+            "main.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    }
+  ],
+  "remotes": [],
+  "exposes": [
+    {
+      "id": "staffHub:StaffHub",
+      "name": "StaffHub",
+      "assets": {
+        "js": {
+          "sync": [
+            "72.js",
+            "350.js",
+            "867.js",
+            "__federation_expose_StaffManagementDashboard.js",
+            "__federation_expose_useStaff.js",
+            "953.js",
+            "__federation_expose_StaffHub.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./StaffHub"
+    },
+    {
+      "id": "staffHub:StaffList",
+      "name": "StaffList",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_StaffList.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./StaffList"
+    },
+    {
+      "id": "staffHub:StaffForm",
+      "name": "StaffForm",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_StaffForm.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./StaffForm"
+    },
+    {
+      "id": "staffHub:StaffProfile",
+      "name": "StaffProfile",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_StaffProfile.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./StaffProfile"
+    },
+    {
+      "id": "staffHub:StaffFilters",
+      "name": "StaffFilters",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_StaffFilters.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./StaffFilters"
+    },
+    {
+      "id": "staffHub:StaffDetailPage",
+      "name": "StaffDetailPage",
+      "assets": {
+        "js": {
+          "sync": [
+            "350.js",
+            "__federation_expose_StaffDetailPage.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./StaffDetailPage"
+    },
+    {
+      "id": "staffHub:StaffManagementDashboard",
+      "name": "StaffManagementDashboard",
+      "assets": {
+        "js": {
+          "sync": [
+            "72.js",
+            "350.js",
+            "867.js",
+            "__federation_expose_StaffManagementDashboard.js",
+            "__federation_expose_useStaff.js",
+            "953.js",
+            "__federation_expose_StaffHub.js",
+            "__federation_expose_StaffManagement.js",
+            "__federation_expose_components.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./StaffManagementDashboard"
+    },
+    {
+      "id": "staffHub:StaffManagement",
+      "name": "StaffManagement",
+      "assets": {
+        "js": {
+          "sync": [
+            "72.js",
+            "350.js",
+            "867.js",
+            "__federation_expose_StaffManagementDashboard.js",
+            "__federation_expose_useStaff.js",
+            "__federation_expose_StaffManagement.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./StaffManagement"
+    },
+    {
+      "id": "staffHub:components",
+      "name": "components",
+      "assets": {
+        "js": {
+          "sync": [
+            "72.js",
+            "350.js",
+            "867.js",
+            "__federation_expose_StaffManagementDashboard.js",
+            "__federation_expose_useStaff.js",
+            "__federation_expose_components.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./components"
+    },
+    {
+      "id": "staffHub:useStaff",
+      "name": "useStaff",
+      "assets": {
+        "js": {
+          "sync": [
+            "72.js",
+            "350.js",
+            "867.js",
+            "__federation_expose_StaffManagementDashboard.js",
+            "__federation_expose_useStaff.js",
+            "953.js",
+            "__federation_expose_StaffHub.js",
+            "__federation_expose_StaffManagement.js",
+            "__federation_expose_components.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./useStaff"
+    },
+    {
+      "id": "staffHub:staffApi",
+      "name": "staffApi",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_staffApi.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./staffApi"
+    },
+    {
+      "id": "staffHub:routing",
+      "name": "routing",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_routing.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./routing"
+    },
+    {
+      "id": "staffHub:mfe-integration",
+      "name": "mfe-integration",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_mfe_integration.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./mfe-integration"
+    }
+  ]
+}

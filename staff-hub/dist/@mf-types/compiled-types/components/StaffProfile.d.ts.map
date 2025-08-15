@@ -1,0 +1,1 @@
+{"version":3,"file":"StaffProfile.d.ts","sourceRoot":"","sources":["../../../../src/components/StaffProfile.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAC1B,OAAO,EAAE,KAAK,EAAE,MAAM,0BAA0B,CAAC;AAIjD,UAAU,iBAAiB;IACzB,KAAK,EAAE,KAAK,GAAG,IAAI,CAAC;CACrB;AAED,eAAO,MAAM,YAAY,EAAE,KAAK,CAAC,EAAE,CAAC,iBAAiB,CA2KpD,CAAC;AAEF,eAAe,YAAY,CAAC"}

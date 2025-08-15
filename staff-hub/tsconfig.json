@@ -1,0 +1,22 @@
+{
+  "extends": "../../../../packages/typescript-config/react-library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/utils/*": ["./src/utils/*"]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
