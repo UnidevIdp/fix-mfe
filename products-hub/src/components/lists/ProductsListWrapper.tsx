@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { ProductsManagementDashboard } from '../ProductsManagementDashboard';
-import { useProducts, useCategories, useDeleteProduct, useUpdateProductStatus } from '../../hooks/useProducts';
+import { useProducts, useDeleteProduct, useUpdateProductStatus } from '../../hooks/useProducts';
 import { Product, ProductFilters } from '../../services/productsApi';
 import { mockProducts } from '../../services/mockData';
 
@@ -94,30 +94,22 @@ const ProductsListWrapper: React.FC = () => {
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ProductsManagementDashboard
-        products={products}
-        selectedProduct={selectedProduct}
-        loading={isLoadingProducts}
-        error={productsError?.message || null}
-        searchQuery={searchQuery}
-        filters={filters}
-        onProductSelect={handleProductSelect}
-        onProductCreate={handleProductCreate}
-        onProductUpdate={handleProductUpdate}
-        onProductDelete={handleProductDelete}
-        onSearch={handleSearch}
-        onFilterChange={handleFilterChange}
-        onRefresh={handleRefresh}
-        className="w-full"
-      />
-      <Toaster 
-        position="top-right" 
-        expand={true}
-        richColors
-        closeButton
-      />
-    </QueryClientProvider>
+    <ProductsManagementDashboard
+      products={products}
+      selectedProduct={selectedProduct}
+      loading={isLoadingProducts}
+      error={productsError?.message || null}
+      searchQuery={searchQuery}
+      filters={filters}
+      onProductSelect={handleProductSelect}
+      onProductCreate={handleProductCreate}
+      onProductUpdate={handleProductUpdate}
+      onProductDelete={handleProductDelete}
+      onSearch={handleSearch}
+      onFilterChange={handleFilterChange}
+      onRefresh={handleRefresh}
+      className="w-full"
+    />
   );
 };
 

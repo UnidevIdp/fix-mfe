@@ -1,512 +1,380 @@
 import React, { useState } from 'react';
-import { Product } from '../../services/productsApi';
-import { Spinner } from '@workspace/ui';
+import { useForm } from 'react-hook-form';
+import { X, Plus, Save } from 'lucide-react';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Textarea,
+  Badge,
+} from '@workspace/ui';
+import { useCreateProduct, useCategories } from '../../hooks/useProducts';
+import { mockCategories } from '../../services/mockData';
 
 interface ProductsFormProps {
-  product?: Product;
   onSuccess?: () => void;
   onCancel?: () => void;
-  loading?: boolean;
-  className?: string;
 }
 
-interface FormErrors {
-  [key: string]: string;
+interface ProductAttribute {
+  id: string;
+  name: string;
+  value: string;
+  type: string;
 }
 
-export const ProductsForm: React.FC<ProductsFormProps> = ({ 
-  product, 
-  onSuccess, 
-  onCancel,
-  loading = false,
-  className = ''
-}) => {
-  const [formData, setFormData] = useState({
-    name: product?.name || '',
-    sku: product?.sku || '',
-    description: product?.description || '',
-    price: product?.price || '',
-    comparePrice: product?.comparePrice || '',
-    costPrice: product?.costPrice || '',
-    categoryId: product?.categoryId || '',
-    vendorId: product?.vendorId || '',
-    quantity: product?.quantity || 0,
-    lowStockThreshold: product?.lowStockThreshold || 10,
-    weight: product?.weight || '',
-    searchKeywords: product?.searchKeywords || '',
-    status: product?.status || 'ACTIVE',
-    inventoryStatus: product?.inventoryStatus || 'IN_STOCK',
-  });
+export const ProductsForm: React.FC<ProductsFormProps> = ({ onSuccess, onCancel }) => {
+  const [attributes, setAttributes] = useState<ProductAttribute[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [newTag, setNewTag] = useState('');
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState<{[key: string]: boolean}>({});
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+  const createProductMutation = useCreateProduct();
+  const { data: categoriesResponse } = useCategories();
+  
+  // Use mock categories for development
+  const categories = React.useMemo(() => {
+    return categoriesResponse?.data || mockCategories;
+  }, [categoriesResponse]);
 
-  const validateField = (name: string, value: any): string => {
-    switch (name) {
-      case 'name':
-        if (!value.trim()) return 'Product name is required';
-        if (value.length < 2) return 'Product name must be at least 2 characters';
-        return '';
-      
-      case 'sku':
-        if (!value.trim()) return 'SKU is required';
-        if (value.length < 3) return 'SKU must be at least 3 characters';
-        return '';
-      
-      case 'price':
-        if (!value.trim()) return 'Price is required';
-        if (isNaN(value) || Number(value) <= 0) return 'Please enter a valid price';
-        return '';
-      
-      case 'categoryId':
-        if (!value.trim()) return 'Category is required';
-        return '';
-      
-      case 'vendorId':
-        if (!value.trim()) return 'Vendor ID is required';
-        return '';
-      
-      case 'quantity':
-        if (value && (isNaN(value) || Number(value) < 0)) return 'Please enter a valid quantity';
-        return '';
-      
-      case 'weight':
-        if (value && (isNaN(value) || Number(value) < 0)) return 'Please enter a valid weight';
-        return '';
-      
-      default:
-        return '';
+  const removeAttribute = (index: number) => {
+    setAttributes(attributes.filter((_, i) => i !== index));
+  };
+
+  const updateAttribute = (index: number, field: string, value: string) => {
+    const newAttributes = [...attributes];
+    newAttributes[index] = { ...newAttributes[index], [field]: value };
+    setAttributes(newAttributes);
+  };
+
+  const addTag = () => {
+    if (newTag.trim() && !tags.includes(newTag.trim())) {
+      setTags([...tags, newTag.trim()]);
+      setNewTag('');
     }
   };
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-    
-    Object.keys(formData).forEach(key => {
-      const error = validateField(key, formData[key as keyof typeof formData]);
-      if (error) newErrors[key] = error;
-    });
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const removeTag = (tag: string) => {
+    setTags(tags.filter(t => t !== tag));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Mark all fields as touched
-    const allTouched = Object.keys(formData).reduce((acc, key) => {
-      acc[key] = true;
-      return acc;
-    }, {} as {[key: string]: boolean});
-    setTouched(allTouched);
-    
-    if (validateForm()) {
-      console.log('Form submitted:', formData);
+  const onSubmit = async (data: any) => {
+    try {
+      const productData = {
+        ...data,
+        attributes,
+        tags,
+        price: data.price.toString(),
+        comparePrice: data.comparePrice?.toString(),
+        costPrice: data.costPrice?.toString(),
+      };
+      
+      await createProductMutation.mutateAsync(productData);
       onSuccess?.();
+    } catch (error) {
+      console.error('Failed to create product:', error);
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-    
-    setFormData(prev => ({
-      ...prev,
-      [name]: newValue
-    }));
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setTouched(prev => ({ ...prev, [name]: true }));
-    
-    const error = validateField(name, value);
-    setErrors(prev => ({ ...prev, [name]: error }));
-  };
-
-  const getFieldStyle = (fieldName: string) => {
-    const hasError = touched[fieldName] && errors[fieldName];
-    return {
-      padding: '0.75rem',
-      border: `2px solid ${hasError 
-        ? 'var(--product-form-error-border, #ef4444)' 
-        : 'var(--product-form-border, hsl(var(--border)))'
-      }`,
-      borderRadius: '0.5rem',
-      backgroundColor: 'var(--product-form-input-bg, hsl(var(--background)))',
-      color: 'var(--product-form-input-text, hsl(var(--foreground)))',
-      fontSize: '0.875rem',
-      outline: 'none',
-      transition: 'all 0.2s ease-in-out',
-      width: '100%'
-    };
-  };
-
-  const renderField = (
-    name: string,
-    label: string,
-    type: string = 'text',
-    required: boolean = false,
-    options?: { value: string; label: string }[]
-  ) => {
-    const fieldError = touched[name] && errors[name];
-    const value = formData[name as keyof typeof formData];
-    
-    return (
-      <div key={name}>
-        <label style={{
-          display: 'block',
-          fontSize: '0.875rem',
-          fontWeight: '600',
-          color: 'var(--product-form-label-color, hsl(var(--foreground)))',
-          marginBottom: '0.5rem'
-        }}>
-          {label} {required && <span style={{ color: 'var(--product-form-required-color, #ef4444)' }}>*</span>}
-        </label>
-        
-        {options ? (
-          <select
-            name={name}
-            value={value as string}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            required={required}
-            disabled={loading}
-            style={getFieldStyle(name)}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'var(--product-form-focus-border, hsl(var(--primary)))';
-              e.target.style.boxShadow = 'var(--product-form-focus-shadow, 0 0 0 3px hsl(var(--primary)) / 0.1)';
-            }}
-            onBlur={(e) => {
-              handleBlur(e);
-              e.target.style.borderColor = fieldError 
-                ? 'var(--product-form-error-border, #ef4444)'
-                : 'var(--product-form-border, hsl(var(--border)))';
-              e.target.style.boxShadow = 'none';
-            }}
-          >
-            {options.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        ) : type === 'textarea' ? (
-          <textarea
-            name={name}
-            value={value as string}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            disabled={loading}
-            rows={3}
-            placeholder={`Enter ${label.toLowerCase()}...`}
-            style={{
-              ...getFieldStyle(name),
-              resize: 'vertical',
-              minHeight: '80px'
-            }}
-          />
-        ) : (
-          <input
-            type={type}
-            name={name}
-            value={value as string}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            required={required}
-            disabled={loading}
-            placeholder={`Enter ${label.toLowerCase()}`}
-            style={getFieldStyle(name)}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'var(--product-form-focus-border, hsl(var(--primary)))';
-              e.target.style.boxShadow = 'var(--product-form-focus-shadow, 0 0 0 3px hsl(var(--primary)) / 0.1)';
-            }}
-            onBlur={(e) => {
-              handleBlur(e);
-              e.target.style.borderColor = fieldError 
-                ? 'var(--product-form-error-border, #ef4444)'
-                : 'var(--product-form-border, hsl(var(--border)))';
-              e.target.style.boxShadow = 'none';
-            }}
-          />
-        )}
-        
-        {fieldError && (
-          <p style={{
-            color: 'var(--product-form-error-text, #ef4444)',
-            fontSize: '0.75rem',
-            marginTop: '0.25rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.25rem'
-          }}>
-            ⚠️ {fieldError}
-          </p>
-        )}
-      </div>
-    );
   };
 
   return (
-    <div style={{
-      padding: '1.5rem',
-      backgroundColor: 'var(--product-form-bg, hsl(var(--card)))',
-      borderRadius: '1rem',
-      border: '1px solid var(--product-form-container-border, hsl(var(--border)))',
-      boxShadow: 'var(--product-form-shadow, 0 4px 6px -1px rgb(0 0 0 / 0.1))'
-    }}>
-      <div style={{
-        marginBottom: '1.5rem',
-        paddingBottom: '1rem',
-        borderBottom: '1px solid var(--product-form-divider, hsl(var(--border)))'
-      }}>
-        <h3 style={{
-          fontSize: '1.25rem',
-          fontWeight: '700',
-          color: 'var(--product-form-title-color, hsl(var(--foreground)))',
-          margin: '0 0 0.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem'
-        }}>
-          {product ? '✏️ Edit Product' : '➕ Add New Product'}
-        </h3>
-        <p style={{
-          fontSize: '0.875rem',
-          color: 'var(--product-form-subtitle-color, hsl(var(--muted-foreground)))',
-          margin: 0
-        }}>
-          {product ? 'Update the information below to modify this product.' : 'Fill in the details below to add a new product to your catalog.'}
-        </p>
-      </div>
+    <div className="max-w-4xl mx-auto space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Create New Product</CardTitle>
+          <CardDescription>
+            Add a new product to your catalog with all the necessary details
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Basic Information */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="name">Product Name *</Label>
+                <Input
+                  id="name"
+                  {...register('name', { required: 'Product name is required' })}
+                  placeholder="Enter product name"
+                />
+                {errors.name && (
+                  <p className="text-sm text-red-600">{errors.name.message}</p>
+                )}
+              </div>
 
-      <form onSubmit={handleSubmit} className={className}>
-        {/* Basic Information Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            📦 Basic Information
-          </h4>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.5rem'
-          }}>
-            {renderField('name', 'Product Name', 'text', true)}
-            {renderField('sku', 'SKU', 'text', true)}
-            {renderField('description', 'Description', 'textarea')}
-            {renderField('categoryId', 'Category', 'select', true, [
-              { value: '', label: 'Select Category' },
-              { value: 'cat-1', label: 'Electronics' },
-              { value: 'cat-2', label: 'Clothing' },
-              { value: 'cat-3', label: 'Books' },
-              { value: 'cat-4', label: 'Home & Garden' },
-              { value: 'cat-5', label: 'Sports & Outdoors' }
-            ])}
-            {renderField('vendorId', 'Vendor ID', 'text', true)}
-          </div>
-        </div>
+              <div className="space-y-2">
+                <Label htmlFor="sku">SKU *</Label>
+                <Input
+                  id="sku"
+                  {...register('sku', { required: 'SKU is required' })}
+                  placeholder="Enter product SKU"
+                />
+                {errors.sku && (
+                  <p className="text-sm text-red-600">{errors.sku.message}</p>
+                )}
+              </div>
 
-        {/* Pricing Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            💰 Pricing Information
-          </h4>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.5rem'
-          }}>
-            {renderField('price', 'Price ($)', 'number', true)}
-            {renderField('comparePrice', 'Compare Price ($)', 'number')}
-            {renderField('costPrice', 'Cost Price ($)', 'number')}
-          </div>
-        </div>
+              <div className="space-y-2">
+                <Label htmlFor="categoryId">Category *</Label>
+                <Select onValueChange={(value) => setValue('categoryId', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.categoryId && (
+                  <p className="text-sm text-red-600">{errors.categoryId.message}</p>
+                )}
+              </div>
 
-        {/* Inventory Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            📊 Inventory & Physical Properties
-          </h4>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.5rem'
-          }}>
-            {renderField('quantity', 'Quantity', 'number')}
-            {renderField('lowStockThreshold', 'Low Stock Threshold', 'number')}
-            {renderField('weight', 'Weight (kg)', 'number')}
-            {renderField('inventoryStatus', 'Inventory Status', 'select', false, [
-              { value: 'IN_STOCK', label: 'In Stock' },
-              { value: 'LOW_STOCK', label: 'Low Stock' },
-              { value: 'OUT_OF_STOCK', label: 'Out of Stock' },
-              { value: 'BACK_ORDER', label: 'Back Order' },
-              { value: 'DISCONTINUED', label: 'Discontinued' }
-            ])}
-          </div>
-        </div>
+              <div className="space-y-2">
+                <Label htmlFor="vendorId">Vendor ID *</Label>
+                <Input
+                  id="vendorId"
+                  {...register('vendorId', { required: 'Vendor ID is required' })}
+                  placeholder="Enter vendor ID"
+                />
+                {errors.vendorId && (
+                  <p className="text-sm text-red-600">{errors.vendorId.message}</p>
+                )}
+              </div>
+            </div>
 
-        {/* Additional Information Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            🔍 Additional Information
-          </h4>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: '1fr',
-            gap: '1.5rem'
-          }}>
-            {renderField('searchKeywords', 'Search Keywords', 'textarea')}
-          </div>
-        </div>
+            {/* Description */}
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                {...register('description')}
+                placeholder="Enter product description"
+                rows={4}
+              />
+            </div>
 
-        {/* Status Section */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h4 style={{
-            fontSize: '1rem',
-            fontWeight: '600',
-            color: 'var(--product-form-section-title, hsl(var(--foreground)))',
-            margin: '0 0 1rem',
-            padding: '0.5rem 0',
-            borderBottom: '2px solid var(--product-form-section-border, hsl(var(--primary)))',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            ⚙️ Status
-          </h4>
-          {renderField('status', 'Product Status', 'select', true, [
-            { value: 'ACTIVE', label: 'Active' },
-            { value: 'DRAFT', label: 'Draft' },
-            { value: 'PENDING', label: 'Pending' },
-            { value: 'INACTIVE', label: 'Inactive' }
-          ])}
-        </div>
+            {/* Pricing */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="space-y-2">
+                <Label htmlFor="price">Price *</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  step="0.01"
+                  {...register('price', { required: 'Price is required' })}
+                  placeholder="0.00"
+                />
+                {errors.price && (
+                  <p className="text-sm text-red-600">{errors.price.message}</p>
+                )}
+              </div>
 
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'flex-end', 
-          gap: '0.75rem',
-          paddingTop: '1rem',
-          borderTop: '1px solid var(--product-form-divider, hsl(var(--border)))'
-        }}>
-          {onCancel && (
-            <button
-              type="button"
-              onClick={onCancel}
-              disabled={loading}
-              style={{
-                padding: '0.75rem 1.5rem',
-                border: '2px solid var(--product-form-cancel-border, hsl(var(--border)))',
-                borderRadius: '0.5rem',
-                backgroundColor: 'var(--product-form-cancel-bg, hsl(var(--background)))',
-                color: 'var(--product-form-cancel-text, hsl(var(--foreground)))',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                transition: 'all 0.2s ease-in-out',
-                opacity: loading ? 0.6 : 1
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.backgroundColor = 'var(--product-form-cancel-hover-bg, hsl(var(--muted)))';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.backgroundColor = 'var(--product-form-cancel-bg, hsl(var(--background)))';
-                }
-              }}
-            >
-              Cancel
-            </button>
-          )}
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: '0.75rem 1.5rem',
-              border: 'none',
-              borderRadius: '0.5rem',
-              backgroundColor: loading 
-                ? 'var(--product-form-submit-disabled-bg, hsl(var(--muted)))'
-                : 'var(--product-form-submit-bg, hsl(var(--primary)))',
-              color: 'var(--product-form-submit-text, hsl(var(--primary-foreground)))',
-              fontSize: '0.875rem',
-              fontWeight: '600',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s ease-in-out',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              opacity: loading ? 0.8 : 1
-            }}
-            onMouseEnter={(e) => {
-              if (!loading) {
-                e.currentTarget.style.backgroundColor = 'var(--product-form-submit-hover-bg, hsl(var(--primary)) / 0.9)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!loading) {
-                e.currentTarget.style.backgroundColor = 'var(--product-form-submit-bg, hsl(var(--primary)))';
-              }
-            }}
-          >
-            {loading && <Spinner size="sm" />}
-            {loading ? 'Saving...' : (product ? '💾 Update Product' : '✅ Create Product')}
-          </button>
-        </div>
-      </form>
+              <div className="space-y-2">
+                <Label htmlFor="comparePrice">Compare Price</Label>
+                <Input
+                  id="comparePrice"
+                  type="number"
+                  step="0.01"
+                  {...register('comparePrice')}
+                  placeholder="0.00"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="costPrice">Cost Price</Label>
+                <Input
+                  id="costPrice"
+                  type="number"
+                  step="0.01"
+                  {...register('costPrice')}
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+
+            {/* Inventory */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="space-y-2">
+                <Label htmlFor="quantity">Quantity</Label>
+                <Input
+                  id="quantity"
+                  type="number"
+                  {...register('quantity', { valueAsNumber: true })}
+                  placeholder="0"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="minOrderQty">Min Order Quantity</Label>
+                <Input
+                  id="minOrderQty"
+                  type="number"
+                  {...register('minOrderQty', { valueAsNumber: true })}
+                  placeholder="1"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="lowStockThreshold">Low Stock Threshold</Label>
+                <Input
+                  id="lowStockThreshold"
+                  type="number"
+                  {...register('lowStockThreshold', { valueAsNumber: true })}
+                  placeholder="10"
+                />
+              </div>
+            </div>
+
+            {/* Additional Fields */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="weight">Weight (kg)</Label>
+                <Input
+                  id="weight"
+                  {...register('weight')}
+                  placeholder="0.0"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="searchKeywords">Search Keywords</Label>
+                <Input
+                  id="searchKeywords"
+                  {...register('searchKeywords')}
+                  placeholder="Keywords for search optimization"
+                />
+              </div>
+            </div>
+
+            {/* Tags */}
+            <div className="space-y-2">
+              <Label>Tags</Label>
+              <div className="flex flex-wrap gap-2 mb-2">
+                {tags.map((tag) => (
+                  <Badge key={tag} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                    {tag}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="ml-1 h-4 w-4 p-0"
+                      onClick={() => removeTag(tag)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <Input
+                  value={newTag}
+                  onChange={(e) => setNewTag(e.target.value)}
+                  placeholder="Add a tag"
+                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                />
+                <Button type="button" variant="outline" onClick={addTag}>
+                  Add
+                </Button>
+              </div>
+            </div>
+
+            {/* Attributes */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label>Product Attributes</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setAttributes([...attributes, { 
+                    id: `attr-${Date.now()}`, 
+                    name: '', 
+                    value: '', 
+                    type: 'text' 
+                  }])}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Attribute
+                </Button>
+              </div>
+
+              {attributes.map((attribute, index) => (
+                <div key={attribute.id} className="grid grid-cols-1 gap-4 md:grid-cols-4 p-4 border rounded-lg">
+                  <Input
+                    placeholder="Attribute name"
+                    value={attribute.name}
+                    onChange={(e) => updateAttribute(index, 'name', e.target.value)}
+                  />
+                  <Input
+                    placeholder="Attribute value"
+                    value={attribute.value}
+                    onChange={(e) => updateAttribute(index, 'value', e.target.value)}
+                  />
+                  <Select
+                    value={attribute.type}
+                    onValueChange={(value) => updateAttribute(index, 'type', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="text">Text</SelectItem>
+                      <SelectItem value="number">Number</SelectItem>
+                      <SelectItem value="color">Color</SelectItem>
+                      <SelectItem value="size">Size</SelectItem>
+                      <SelectItem value="boolean">Boolean</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => removeAttribute(index)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            {/* Submit Buttons */}
+            <div className="flex justify-end space-x-4 pt-6 border-t">
+              {onCancel && (
+                <Button type="button" variant="outline" onClick={onCancel}>
+                  Cancel
+                </Button>
+              )}
+              <Button
+                type="submit"
+                disabled={createProductMutation.isPending}
+                className="min-w-[120px]"
+              >
+                {createProductMutation.isPending ? (
+                  <>Loading...</>
+                ) : (
+                  <>
+                    <Save className="mr-2 h-4 w-4" />
+                    Create Product
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
-
-export default ProductsForm;
