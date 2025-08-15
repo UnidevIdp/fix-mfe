@@ -412,32 +412,60 @@ export const StaffManagementDashboard: React.FC<StaffManagementDashboardProps> =
         </div>
 
         <div className="flex gap-2">
-          <Button 
-            variant="outline"
-            onClick={onRefresh} 
-            className="btn-modern-outline btn-modern-outline-neutral"
-          >
-            <RefreshCw size={16} className="btn-icon-rotate btn-icon-rotate-180" />
-            Refresh
-          </Button>
-          
-          <Button 
-            variant="outline"
-            onClick={() => setViewMode('bulk')} 
-            className="btn-modern-outline btn-modern-outline-accent"
-          >
-            <Settings2 size={16} className="btn-icon-rotate btn-icon-rotate-90" />
-            Bulk Manage
-          </Button>
-          
-          <Button 
-            onClick={handleCreateNew} 
-            className="btn-modern-primary btn-shimmer"
-          >
-            <Plus size={16} className="btn-icon-rotate btn-icon-rotate-90" />
-            Add Staff
-          </Button>
-            </div>
+            {/* Refresh Button */}
+            <button
+              onClick={onRefresh}
+              className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-slate-600 border border-slate-200 rounded-lg hover:text-slate-700 hover:border-slate-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-white/80 backdrop-blur-sm"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(to right, #f8fafc, #f1f5f9)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)';
+              }}
+            >
+              <div className="relative flex items-center gap-2">
+                <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-300" />
+                Refresh
+              </div>
+            </button>
+            
+            {/* Bulk Manage Button */}
+            <button
+              onClick={() => setViewMode('bulk')}
+              className="group relative overflow-hidden px-4 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:text-indigo-700 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 bg-indigo-50/50 backdrop-blur-sm"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(to right, #eef2ff, #e0e7ff)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(238, 242, 255, 0.5)';
+              }}
+            >
+              <div className="relative flex items-center gap-2">
+                <Settings2 size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                Bulk Manage
+              </div>
+            </button>
+            
+            {/* Add Staff Button - Primary */}
+            <button
+              onClick={handleCreateNew}
+              className="group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+              <div className="relative flex items-center gap-2">
+                <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                Add Staff
+              </div>
+            </button>
+          </div>
           </div>
         </CardContent>
       </Card>

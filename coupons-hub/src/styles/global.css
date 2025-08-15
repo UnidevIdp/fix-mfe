@@ -63,76 +63,65 @@
 
 /* Enhanced button styles */
 @layer components {
-  .btn-modern-primary {
-    @apply group relative overflow-hidden px-6 py-2.5 text-sm font-semibold text-white rounded-lg;
-    @apply shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5;
-    @apply bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800;
-    @apply hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-900;
+  /* Modern Button Animations */
+  .modern-button-primary {
+    background: linear-gradient(135deg, #10b981, #059669, #047857);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.625rem 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
   }
   
-  .btn-modern-primary::before {
-    @apply absolute inset-0 bg-gradient-to-r from-white/20 to-transparent;
-    @apply opacity-0 group-hover:opacity-100 transition-opacity duration-200;
-    content: '';
+  .modern-button-primary:hover {
+    background: linear-gradient(135deg, #059669, #047857, #065f46);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
   
-  .btn-modern-outline {
-    @apply group relative overflow-hidden px-4 py-2.5 text-sm font-medium;
-    @apply border rounded-lg transition-all duration-200;
-    @apply hover:shadow-md hover:-translate-y-0.5 backdrop-blur-sm;
+  .modern-button-outline {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    color: #475569;
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 0.625rem 1rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
   }
   
-  .btn-modern-outline-neutral {
-    @apply text-slate-600 border-slate-200 hover:text-slate-700 hover:border-slate-300;
-    @apply bg-white/80;
+  .modern-button-outline:hover {
+    color: #334155;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
   
-  .btn-modern-outline-accent {
-    @apply text-indigo-600 border-indigo-200 hover:text-indigo-700 hover:border-indigo-300;
-    @apply bg-indigo-50/50;
+  .modern-button-accent {
+    background: rgba(236, 253, 245, 0.5);
+    border: 1px solid #a7f3d0;
+    border-radius: 0.5rem;
+    color: #059669;
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 0.625rem 1rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
   }
   
-  .btn-modern-outline::before {
-    @apply absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200;
-    content: '';
-  }
-  
-  .btn-modern-outline-neutral::before {
-    @apply bg-gradient-to-r from-slate-50 to-slate-100;
-  }
-  
-  .btn-modern-outline-accent::before {
-    @apply bg-gradient-to-r from-indigo-50 to-indigo-100;
-  }
-  
-  .btn-icon-rotate {
-    @apply transition-transform duration-300;
-  }
-  
-  .btn-icon-rotate-90:hover {
-    @apply rotate-90;
-  }
-  
-  .btn-icon-rotate-180:hover {
-    @apply rotate-180;
-  }
-  
-  .card-modern {
-    @apply bg-white/80 backdrop-blur-sm border border-slate-200/60;
-    @apply hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200;
-    @apply hover:border-slate-300/80;
-  }
-  
-  .analytics-card-modern {
-    @apply bg-white/90 backdrop-blur-sm border border-slate-200/50;
-    @apply hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
-    @apply hover:border-slate-300/70 rounded-xl;
-  }
-  
-  .list-item-modern {
-    @apply bg-white/60 backdrop-blur-sm border border-transparent;
-    @apply hover:bg-white/90 hover:border-slate-200/60;
-    @apply hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
-    @apply rounded-xl;
+  .modern-button-accent:hover {
+    color: #047857;
+    border-color: #6ee7b7;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 }
