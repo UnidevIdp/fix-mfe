@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Product } from '../services/productsApi';
 import { useProducts, useDeleteProduct, useUpdateProductStatus } from '../hooks/useProducts';
 import { useMfeRouter } from '@workspace/shared';
 import { ProductsManagementDashboard } from './ProductsManagementDashboard';
-import { useMemo } from 'react';
+import { mockProducts } from '../services/mockData';
 
 interface ProductsManagementProps {
   initialViewMode?: 'list' | 'detail' | 'create' | 'edit';
@@ -51,7 +51,7 @@ export const ProductsManagement: React.FC<ProductsManagementProps> = ({
   // Use mock data in development if API fails
   const products = useMemo(() => {
     if (isDevelopment && (!productsResponse || productsError)) {
-      return require('../services/mockData').mockProducts;
+      return mockProducts;
     }
     return productsResponse?.data || [];
   }, [productsResponse, productsError, isDevelopment]);

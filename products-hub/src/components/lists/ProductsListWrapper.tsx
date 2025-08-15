@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { ProductsManagementDashboard } from '../ProductsManagementDashboard';
 import { useProducts, useCategories, useDeleteProduct, useUpdateProductStatus } from '../../hooks/useProducts';
 import { Product, ProductFilters } from '../../services/productsApi';
-import { mockProducts, mockCategories } from '../../services/mockData';
-import { useState, useMemo } from 'react';
+import { mockProducts } from '../../services/mockData';
 
 // Create a separate query client for the exported component
 const queryClient = new QueryClient({
@@ -41,11 +40,6 @@ const ProductsListWrapper: React.FC = () => {
     refetch
   } = useProducts(filters);
 
-  const { 
-    data: categoriesResponse, 
-    isLoading: isLoadingCategories 
-  } = useCategories();
-
   const deleteProductMutation = useDeleteProduct();
   const updateStatusMutation = useUpdateProductStatus();
 
@@ -75,7 +69,6 @@ const ProductsListWrapper: React.FC = () => {
   };
 
   const handleProductCreate = async (data: any): Promise<Product | null> => {
-    // Implementation for creating product
     console.log('Create product:', data);
     return null;
   };
