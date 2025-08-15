@@ -116,3 +116,5 @@ export const ProductsFilters: React.FC<ProductsFiltersProps> = ({
 };
 
 export default ProductsFilters;
+  )
+}
