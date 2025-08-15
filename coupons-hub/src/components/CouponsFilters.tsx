@@ -85,3 +85,5 @@ export const CouponsFilters: React.FC<CouponsFiltersProps> = ({
 };
 
 export default CouponsFilters;
+  )
+}
